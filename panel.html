@@ -72,8 +72,8 @@ tr:last-child td{border-bottom:0}
   "use strict";
   var SUPABASE_URL="https://tgkoksukglkcnqkydafb.supabase.co";
   var SUPABASE_KEY="sb_publishable_33ulCqJBPT5btXV8cFuShg_OMDAKKpC";
-  var PANEL_CODE="fastlife2026";
-  var RESET_SINCE="2026-06-19T15:54:00Z"; // فقط بازدیدهای بعد از این لحظه شمرده می‌شوند
+  var PANEL_CODE="fastlife";
+  var RESET_SINCE="2026-06-19T15:57:06Z"; // فقط بازدیدهای بعد از این لحظه شمرده می‌شوند
 
   var faD="۰۱۲۳۴۵۶۷۸۹";
   function fa(v){return String(v).replace(/[0-9]/g,function(d){return faD[d];});}
@@ -90,17 +90,19 @@ tr:last-child td{border-bottom:0}
     catch(e){return iso;}
   }
   var el=function(id){return document.getElementById(id);};
+  var MYVID=null;try{MYVID=localStorage.getItem("fl_vid");}catch(e){}
 
-  /* ---- gate ---- */
+  /* ---- gate (با حافظه؛ فقط بارِ اول رمز می‌خواد) ---- */
+  function doOpen(){el("gate").style.display="none";el("app").style.display="block";load();}
   function unlock(){
-    if(el("code").value===PANEL_CODE){
-      el("gate").style.display="none";
-      el("app").style.display="block";
-      load();
+    if(el("code").value.trim().toLowerCase()===PANEL_CODE){
+      try{localStorage.setItem("fl_panel_ok","1");}catch(e){}
+      doOpen();
     } else { el("err").textContent="رمز درست نیست."; }
   }
   el("enter").onclick=unlock;
   el("code").addEventListener("keydown",function(e){if(e.key==="Enter")unlock();});
+  try{if(localStorage.getItem("fl_panel_ok")==="1") doOpen();}catch(e){}
 
   /* ---- data ---- */
   function fetchEvents(){
@@ -123,6 +125,7 @@ tr:last-child td{border-bottom:0}
 
   function render(rows){
     rows=rows||[];
+    if(MYVID) rows=rows.filter(function(r){return r.visitor_id!==MYVID;});
     if(!rows.length){
       el("content").innerHTML='<div class="panel"><h2>هنوز داده‌ای ثبت نشده</h2><p class="note">به‌محض اینکه کاربرها وارد ابزارها بشن، آمار اینجا ظاهر می‌شه. لینکِ تست رو که فرستادی، چند دقیقه بعد از اولین بازدید دوباره «به‌روزرسانی» بزن.</p></div>';
       return;
