@@ -59,7 +59,7 @@ tr:last-child td{border-bottom:0}
   <header>
     <div>
       <h1>پنل بازدیدِ ابزارهای فست لایف</h1>
-      <p class="sub" id="rangeNote">آمارِ ۷ روزِ گذشته</p>
+      <p class="sub" id="rangeNote">آمارِ استفاده — از شروعِ تستِ واقعی</p>
     </div>
     <button class="btn" id="refresh" type="button">به‌روزرسانی ↻</button>
   </header>
@@ -73,6 +73,7 @@ tr:last-child td{border-bottom:0}
   var SUPABASE_URL="https://tgkoksukglkcnqkydafb.supabase.co";
   var SUPABASE_KEY="sb_publishable_33ulCqJBPT5btXV8cFuShg_OMDAKKpC";
   var PANEL_CODE="fastlife2026";
+  var RESET_SINCE="2026-06-19T15:54:00Z"; // فقط بازدیدهای بعد از این لحظه شمرده می‌شوند
 
   var faD="۰۱۲۳۴۵۶۷۸۹";
   function fa(v){return String(v).replace(/[0-9]/g,function(d){return faD[d];});}
@@ -103,7 +104,8 @@ tr:last-child td{border-bottom:0}
 
   /* ---- data ---- */
   function fetchEvents(){
-    var since=new Date(Date.now()-7*864e5).toISOString();
+    var floorMs=Math.max(Date.now()-7*864e5, Date.parse(RESET_SINCE)||0);
+    var since=new Date(floorMs).toISOString();
     var url=SUPABASE_URL.replace(/\/+$/,"")+"/rest/v1/events?select=session_id,visitor_id,tool,started_at,updated_at,active_seconds&started_at=gte."+encodeURIComponent(since)+"&order=started_at.desc&limit=20000";
     return fetch(url,{headers:{"apikey":SUPABASE_KEY,"Authorization":"Bearer "+SUPABASE_KEY}}).then(function(r){
       if(!r.ok) throw new Error("HTTP "+r.status);
