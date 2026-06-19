@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>پنجره‌یاب — فست لایف</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#e9ebf0; --lt:#ffffff; --dk:#c4c8d2;
+    --ink:#4a4e58; --ink-d:#363941; --muted:#969ca8; --line:#d7dae1;
+    --sage:#8aa472; --sage-d:#5f7a45; --warm:#c88f6a;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{font-family:'Vazirmatn',Tahoma,sans-serif;background:var(--bg);color:var(--ink);line-height:1.85;direction:rtl;text-align:right;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:500px;margin:0 auto;padding:24px 16px 80px}
+
+  header{text-align:center;margin-bottom:8px}
+  h1{font-size:26px;font-weight:800;color:var(--ink-d);margin:0}
+  .sub{color:var(--muted);font-size:12.5px;margin:6px 2px 0;line-height:1.95}
+
+  .card{background:var(--bg);border-radius:24px;padding:20px 18px;margin:16px 2px;box-shadow:6px 6px 14px var(--dk),-6px -6px 14px var(--lt)}
+  .ch{font-size:15px;font-weight:800;color:var(--ink-d);margin:0 0 4px}
+  .cs{font-size:11.5px;color:var(--muted);margin:0 0 14px;line-height:1.9}
+
+  /* ratios */
+  .ratios{display:flex;gap:7px;margin-top:6px}
+  .rat{flex:1;text-align:center;padding:13px 3px;border:none;border-radius:14px;background:var(--bg);cursor:pointer;position:relative;font-family:inherit;box-shadow:4px 4px 9px var(--dk),-4px -4px 9px var(--lt);transition:.16s}
+  .rat:active{transform:scale(.97)}
+  .rat .rn{font-size:16px;font-weight:800;color:var(--ink-d)}
+  .rat .rc{font-size:10px;color:var(--muted);margin-top:2px}
+  .rat.on{box-shadow:inset 4px 4px 9px var(--dk),inset -4px -4px 9px var(--lt)}
+  .rat.on .rn{color:var(--sage-d)}
+  .rat .rec{display:none;position:absolute;top:-9px;left:50%;transform:translateX(-50%);background:var(--sage);color:#fff;font-size:9.5px;font-weight:800;padding:2px 8px;border-radius:20px;white-space:nowrap;box-shadow:2px 2px 5px var(--dk)}
+  .rat.recommended .rec{display:block}
+
+  /* clock */
+  .clockwrap{text-align:center;margin:18px 0 6px}
+  svg.clock{width:250px;height:250px;max-width:100%}
+  .timerow{display:flex;align-items:center;justify-content:center;margin-top:6px}
+  .stepper{display:flex;align-items:center;gap:12px}
+  .stepper button{width:36px;height:36px;border:none;background:var(--bg);border-radius:11px;cursor:pointer;font-size:18px;color:var(--sage-d);font-family:inherit;font-weight:800;box-shadow:4px 4px 8px var(--dk),-4px -4px 8px var(--lt)}
+  .stepper button:active{box-shadow:inset 3px 3px 6px var(--dk),inset -3px -3px 6px var(--lt)}
+  .tbig{font-size:18px;font-weight:800;color:var(--sage-d);min-width:84px;text-align:center}
+  .windowline{display:flex;gap:10px;margin-top:18px}
+  .wbox{flex:1;border-radius:14px;padding:12px;text-align:center;box-shadow:inset 3px 3px 7px var(--dk),inset -3px -3px 7px var(--lt)}
+  .wbox .wt{font-size:11px;color:var(--muted)}
+  .wbox .wv{font-size:14px;font-weight:800;margin-top:2px}
+  .wbox.eat .wv{color:var(--sage-d)}
+  .wbox.fast .wv{color:var(--warm)}
+
+  /* personal */
+  .ptoggle{font-size:12.5px;color:var(--sage-d);background:var(--bg);border:none;cursor:pointer;padding:10px 16px;font-family:inherit;font-weight:700;border-radius:999px;box-shadow:4px 4px 9px var(--dk),-4px -4px 9px var(--lt)}
+  .ptoggle:active{box-shadow:inset 3px 3px 7px var(--dk),inset -3px -3px 7px var(--lt)}
+  .ppanel{display:none;margin-top:14px}
+  .ppanel.on{display:block}
+  .lbl{font-size:12.5px;color:var(--ink-d);font-weight:700;margin:14px 0 9px}
+  .pills{display:flex;gap:8px;flex-wrap:wrap}
+  .pill{flex:1;min-width:44%;text-align:center;padding:11px 8px;border:none;border-radius:13px;background:var(--bg);cursor:pointer;font-size:13px;color:var(--ink);font-family:inherit;box-shadow:4px 4px 9px var(--dk),-4px -4px 9px var(--lt);transition:.16s}
+  .pill.on{box-shadow:inset 4px 4px 9px var(--dk),inset -4px -4px 9px var(--lt);color:var(--sage-d);font-weight:800}
+  .why{font-size:12.5px;color:var(--sage-d);font-weight:600;border-radius:14px;padding:13px 15px;margin-top:14px;line-height:1.95;box-shadow:inset 4px 4px 9px var(--dk),inset -4px -4px 9px var(--lt)}
+  .phasenote{font-size:12px;color:var(--warm);font-weight:600;border-radius:14px;padding:11px 14px;margin-top:12px;line-height:1.9;box-shadow:inset 3px 3px 7px var(--dk),inset -3px -3px 7px var(--lt)}
+
+  /* timer */
+  .timer{background:var(--bg);border-radius:24px;padding:24px 20px;text-align:center;margin:16px 2px;box-shadow:6px 6px 14px var(--dk),-6px -6px 14px var(--lt)}
+  .timer .tk{font-size:12px;color:var(--muted);font-weight:700}
+  .timer .telapsed{font-size:46px;font-weight:800;color:var(--sage-d);line-height:1.05;margin:6px 0 2px;letter-spacing:1px}
+  .timer .tsec{font-size:12.5px;color:var(--muted);margin-bottom:16px}
+  .bar{height:11px;background:var(--bg);border-radius:20px;overflow:hidden;margin:6px 0;box-shadow:inset 3px 3px 6px var(--dk),inset -3px -3px 6px var(--lt)}
+  .bar > i{display:block;height:100%;width:0;background:var(--sage);border-radius:20px;transition:width .5s}
+  .barlbl{font-size:11.5px;color:var(--muted);margin-bottom:16px}
+  .stage{border-radius:16px;padding:14px 16px;text-align:right;margin-bottom:16px;box-shadow:inset 4px 4px 9px var(--dk),inset -4px -4px 9px var(--lt)}
+  .stage .st{font-size:13.5px;font-weight:800;color:var(--sage-d);margin-bottom:5px}
+  .stage .sb{font-size:12.5px;color:var(--ink);line-height:1.95}
+  .tbtns{display:flex;gap:10px}
+  .tbtn{flex:1;border:none;border-radius:14px;padding:14px;font-size:14px;cursor:pointer;font-family:inherit;font-weight:800;background:var(--bg);box-shadow:5px 5px 11px var(--dk),-5px -5px 11px var(--lt)}
+  .tbtn:active{box-shadow:inset 4px 4px 9px var(--dk),inset -4px -4px 9px var(--lt)}
+  .tbtn.start{color:var(--sage-d)}
+  .tbtn.stop{color:var(--warm)}
+  .tbtn.ghost{color:var(--muted);font-weight:700}
+  .remind{margin-top:14px;font-size:11.5px;color:var(--muted);background:none;border:none;cursor:pointer;font-family:inherit;text-decoration:underline}
+
+  .note{font-size:11.5px;color:var(--muted);border-radius:16px;padding:14px 16px;margin-top:22px;line-height:1.95;box-shadow:inset 4px 4px 9px var(--dk),inset -4px -4px 9px var(--lt)}
+  .note b{color:var(--ink-d)}
+
+  .hero{margin:16px 2px;padding:18px 20px;border-radius:24px;background:var(--bg);box-shadow:6px 6px 14px var(--dk),-6px -6px 14px var(--lt)}
+  .hero .eye{font-size:11px;font-weight:800;color:var(--sage-d);letter-spacing:.3px}
+  .hero h2{margin:6px 0 4px;font-size:18px;font-weight:800;color:var(--ink-d)}
+  .hero p{margin:0;font-size:12.5px;color:var(--muted);line-height:1.95}
+
+  /* ===== سوییچِ تم ===== */
+  .themebar{display:flex;gap:5px;max-width:196px;margin:12px auto 4px;padding:4px;border-radius:999px;background:var(--bg);box-shadow:inset 2px 2px 6px var(--dk),inset -2px -2px 6px var(--lt)}
+  .themebtn{flex:1;border:none;background:transparent;font-family:inherit;font-size:12px;font-weight:800;color:var(--muted);padding:7px 6px;border-radius:999px;cursor:pointer;transition:.18s}
+  .themebtn.on{background:var(--bg);color:var(--ink-d);box-shadow:4px 4px 9px var(--dk),-4px -4px 9px var(--lt)}
+
+  /* =================== تمِ «پاستیلی» =================== */
+  body.shad{--bg:#FAF6EF;--lt:#ffffff;--dk:#e6dff0;--ink:#5b5560;--ink-d:#3f3a46;--dark:#3f3a46;--muted:#9a93a6;--line:#ece6f2;background:#FAF6EF}
+  body.shad::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background:
+    radial-gradient(440px 400px at 14% 8%,rgba(255,173,173,.55),transparent 60%),
+    radial-gradient(420px 380px at 86% 12%,rgba(255,214,165,.55),transparent 60%),
+    radial-gradient(460px 420px at 93% 50%,rgba(253,255,182,.62),transparent 60%),
+    radial-gradient(440px 420px at 8% 58%,rgba(228,241,238,.75),transparent 60%),
+    radial-gradient(470px 440px at 72% 92%,rgba(217,237,248,.68),transparent 62%),
+    radial-gradient(440px 420px at 22% 96%,rgba(222,218,244,.68),transparent 62%)}
+  body.shad .themebar{background:#EFE7F4;box-shadow:inset 2px 2px 6px rgba(160,150,190,.3),inset -2px -2px 6px rgba(255,255,255,.9)}
+  body.shad .themebtn.on{background:linear-gradient(145deg,#FFD6A5,#DEDAF4);color:#5b4452;box-shadow:0 8px 16px -5px rgba(200,160,200,.55),inset 0 2px 0 rgba(255,255,255,.6)}
+
+  body.shad .wrap{position:relative;z-index:1}
+  body.shad .hero,body.shad .card,body.shad .timer{background:linear-gradient(160deg,rgba(255,255,255,.88),rgba(255,255,255,.64));-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.9);box-shadow:0 16px 32px -12px rgba(168,150,200,.4),inset 0 2px 0 rgba(255,255,255,.92)}
+  body.shad .rat,body.shad .stepper button,body.shad .ptoggle,body.shad .pill,body.shad .tbtn{background:linear-gradient(160deg,rgba(255,255,255,.92),rgba(255,255,255,.68));border:1px solid rgba(255,255,255,.88);box-shadow:0 10px 20px -8px rgba(168,150,200,.42),inset 0 2px 0 rgba(255,255,255,.9)}
+  body.shad .wbox,body.shad .why,body.shad .phasenote,body.shad .note,body.shad .stage,body.shad .bar{background:#F4F0FB;box-shadow:inset 0 2px 6px rgba(160,150,190,.28)}
+  body.shad .rat.on,body.shad .pill.on{background:linear-gradient(145deg,#FFD6A5,#DEDAF4);box-shadow:0 9px 18px -6px rgba(200,160,200,.5),inset 0 2px 0 rgba(255,255,255,.6)}
+  body.shad .rat.on .rn,body.shad .pill.on{color:#7a5a52}
+  body.shad .bar > i{background:linear-gradient(270deg,#FFADAD,#FFD6A5,#DEDAF4)}
+  body.shad .rat .rec{background:#c89ad0;box-shadow:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>پنجره‌یاب</h1>
+  </header>
+
+  <div class="themebar">
+    <button class="themebtn on" id="thm-minimal" type="button" onclick="setTheme('minimal')">مینیمال</button>
+    <button class="themebtn" id="thm-shad" type="button" onclick="setTheme('shad')">پاستیلی</button>
+  </div>
+
+  <div class="hero">
+    <h2>فستی رو انتخاب کن که بتونی ادامه بدی.</h2>
+    <p>اول تصمیم بگیر چه نوع فستی میخوای بگیری، بعد ساعتِ اولین وعده‌ات رو انتخاب کن تا پنجرهٔ فستینگ‌ات دربیاد. قرار نیست سخت و سنگینش کنی؛ قراره بتونی واقعاً ادامه‌اش بدی.</p>
+  </div>
+
+  <!-- COMPASS -->
+  <div class="card">
+    <p class="ch">بازه‌ات رو انتخاب کن</p>
+    <p class="cs">عددِ بزرگ‌تر یعنی فستِ طولانی‌تر و پنجرهٔ خوردنِ کوتاه‌تر. لازم نیست از همه سفت‌تر رو بگیری.</p>
+    <div class="ratios" id="ratios">
+      <button class="rat" data-r="12"><span class="rec">پیشنهاد</span><div class="rn">۱۲/۱۲</div><div class="rc">۱۲ ساعت فست</div></button>
+      <button class="rat" data-r="13"><span class="rec">پیشنهاد</span><div class="rn">۱۳/۱۱</div><div class="rc">۱۳ ساعت فست</div></button>
+      <button class="rat" data-r="14"><span class="rec">پیشنهاد</span><div class="rn">۱۴/۱۰</div><div class="rc">۱۴ ساعت فست</div></button>
+      <button class="rat" data-r="15"><span class="rec">پیشنهاد</span><div class="rn">۱۵/۹</div><div class="rc">۱۵ ساعت فست</div></button>
+      <button class="rat" data-r="16"><span class="rec">پیشنهاد</span><div class="rn">۱۶/۸</div><div class="rc">۱۶ ساعت فست</div></button>
+    </div>
+
+    <div class="clockwrap">
+      <svg class="clock" viewBox="0 0 260 260" id="clock"></svg>
+    </div>
+
+    <div class="lbl" style="text-align:center">اولین وعده‌ات (شروعِ پنجرهٔ خوردن) چه ساعتیه؟</div>
+    <div class="timerow">
+      <div class="stepper">
+        <button id="tMinus">−</button>
+        <span class="tbig" id="startTime">۱۰:۰۰</span>
+        <button id="tPlus">+</button>
+      </div>
+    </div>
+
+    <div class="windowline">
+      <div class="wbox eat"><div class="wt">پنجرهٔ خوردن</div><div class="wv" id="eatWin">—</div></div>
+      <div class="wbox fast"><div class="wt">پنجرهٔ فست</div><div class="wv" id="fastWin">—</div></div>
+    </div>
+
+    <div style="margin-top:16px;text-align:center">
+      <button class="ptoggle" id="ptoggle">پیشنهادِ شخصی ببین (مرد/خانم و فاز سیکل)</button>
+      <div class="ppanel" id="ppanel" style="text-align:right">
+        <div class="lbl">جنسیت</div>
+        <div class="pills" id="genderPills">
+          <button class="pill" data-g="m">مرد</button>
+          <button class="pill" data-g="f">خانم</button>
+        </div>
+        <div class="lbl">با فست چقدر کار کرده‌ای؟</div>
+        <div class="pills" id="expPills">
+          <button class="pill" data-e="new">تازه‌کارم</button>
+          <button class="pill" data-e="exp">قبلاً فست کرده‌ام</button>
+        </div>
+        <div id="phaseWrap" style="display:none">
+          <div class="lbl">این روزها کجای سیکلت هستی؟</div>
+          <div class="pills" id="phasePills">
+            <button class="pill" data-p="period">روزهای پریود</button>
+            <button class="pill" data-p="follicular">بعد پریود (فولیکولی)</button>
+            <button class="pill" data-p="ovulation">وسط سیکل (تخمک‌گذاری)</button>
+            <button class="pill" data-p="luteal">هفتهٔ قبل پریود (پی‌ام‌اس)</button>
+          </div>
+          <div class="phasenote" id="phaseNote" style="display:none"></div>
+        </div>
+        <div class="why" id="whyBox" style="display:none"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIMER -->
+  <div class="timer" id="timerCard">
+    <div class="tk">تایمرِ فست</div>
+    <div class="telapsed" id="elapsed">۰:۰۰</div>
+    <div class="tsec" id="elapsedSec">هنوز شروع نشده</div>
+    <div class="bar"><i id="bar"></i></div>
+    <div class="barlbl" id="barLbl">بازهٔ هدف: ۱۴ ساعت</div>
+    <div class="stage" id="stageBox" style="display:none">
+      <div class="st" id="stageTitle"></div>
+      <div class="sb" id="stageBody"></div>
+    </div>
+    <div class="tbtns" id="timerBtns">
+      <button class="tbtn start" id="startFast">شروعِ فست</button>
+    </div>
+    <button class="remind" id="remindBtn" style="display:none">یادآوریِ مرورگر رو روشن کن</button>
+  </div>
+
+  <div class="note">این ابزار جای پزشک نیست. اگر باردار یا شیرده‌ای، داروی دیابت/انسولین می‌گیری، سابقهٔ اختلال خوردن داری یا زیر ۱۸ سالی، قبل از هر بازهٔ فست با پزشک یا کوچت حرف بزن. هدفِ فست، خالی و عصبی‌کردنِ بدن نیست؛ همراه‌شدن با بدنه. روزی که سخت شد، یک پله بیا پایین — ول نکن، فقط سبک‌تر کن.</div>
+</div>
+
+<script>
+(function(){
+  function fa(n){return String(n).replace(/[0-9]/g,function(d){return "۰۱۲۳۴۵۶۷۸۹"[d];});}
+  function pad(n){return (n<10?'0'+n:''+n);}
+  function timeStr(h){return fa(pad(h)+':00');}
+
+  var RATIO={12:{eat:12},13:{eat:11},14:{eat:10},15:{eat:9},16:{eat:8}};
+  var DEFSTART={12:8,13:9,14:10,15:11,16:12};
+  var state={gender:null,exp:null,phase:null,ratio:14,start:10};
+
+  // ---------- clock (24h dial, 12=noon at top, 0/24 at bottom) ----------
+  var CX=130,CY=130,R=88;
+  function pos(h,r){var a=((h-12)/24)*2*Math.PI - Math.PI/2;return {x:CX+r*Math.cos(a),y:CY+r*Math.sin(a)};}
+  function drawClock(){
+    var eat=RATIO[state.ratio].eat, start=state.start, end=(start+eat)%24;
+    var s='';
+    s+='<circle cx="'+CX+'" cy="'+CY+'" r="'+R+'" fill="none" stroke="#d7dae1" stroke-width="16"/>';
+    for(var h=0;h<24;h++){
+      var o=pos(h,R+8.5), i2=pos(h,(h%2===0)?R+2.5:R+5.5);
+      s+='<line x1="'+i2.x.toFixed(1)+'" y1="'+i2.y.toFixed(1)+'" x2="'+o.x.toFixed(1)+'" y2="'+o.y.toFixed(1)+'" stroke="#c4c8d2" stroke-width="'+(h%2===0?1.6:1)+'"/>';
+    }
+    var p1=pos(start,R), p2=pos(end,R), large=eat>12?1:0;
+    s+='<path d="M '+p1.x.toFixed(2)+' '+p1.y.toFixed(2)+' A '+R+' '+R+' 0 '+large+' 1 '+p2.x.toFixed(2)+' '+p2.y.toFixed(2)+'" fill="none" stroke="#8aa472" stroke-width="16" stroke-linecap="round"/>';
+    for(var n=0;n<24;n+=2){
+      var lp=pos(n,R+22);
+      var big=(n%6===0);
+      s+='<text x="'+lp.x.toFixed(1)+'" y="'+(lp.y+4.5).toFixed(1)+'" text-anchor="middle" fill="'+(big?'#363941':'#969ca8')+'" font-size="'+(big?14:11.5)+'" font-weight="'+(big?'bold':'normal')+'" font-family="Vazirmatn,Tahoma">'+fa(n)+'</text>';
+    }
+    s+='<circle cx="'+p1.x.toFixed(2)+'" cy="'+p1.y.toFixed(2)+'" r="6.5" fill="#5f7a45" stroke="#e9ebf0" stroke-width="2.5"/>';
+    s+='<circle cx="'+p2.x.toFixed(2)+'" cy="'+p2.y.toFixed(2)+'" r="6.5" fill="#c88f6a" stroke="#e9ebf0" stroke-width="2.5"/>';
+    s+='<text x="'+CX+'" y="'+(CY-4)+'" text-anchor="middle" fill="#363941" font-size="26" font-weight="bold" font-family="Vazirmatn,Tahoma">'+fa(state.ratio)+'/'+fa(24-state.ratio)+'</text>';
+    s+='<text x="'+CX+'" y="'+(CY+18)+'" text-anchor="middle" fill="#969ca8" font-size="11.5" font-family="Vazirmatn,Tahoma">سبز = وقتِ خوردن</text>';
+    document.getElementById('clock').innerHTML=s;
+    document.getElementById('startTime').textContent=timeStr(start);
+  }
+  function updateWindows(){
+    var eat=RATIO[state.ratio].eat, start=state.start, end=(start+eat)%24;
+    document.getElementById('eatWin').textContent=timeStr(start)+' تا '+timeStr(end);
+    document.getElementById('fastWin').textContent=timeStr(end)+' تا '+timeStr(start);
+    document.getElementById('barLbl').textContent='بازهٔ هدف: '+fa(state.ratio)+' ساعت';
+    if(timer.startTs) tick();
+  }
+  function selectRatioUI(){
+    document.querySelectorAll('#ratios .rat').forEach(function(el){el.classList.toggle('on',+el.dataset.r===state.ratio);});
+  }
+  document.querySelectorAll('#ratios .rat').forEach(function(el){
+    el.onclick=function(){state.ratio=+el.dataset.r;state.start=DEFSTART[state.ratio];selectRatioUI();drawClock();updateWindows();};
+  });
+  document.getElementById('tPlus').onclick=function(){state.start=(state.start+1)%24;drawClock();updateWindows();};
+  document.getElementById('tMinus').onclick=function(){state.start=(state.start+23)%24;drawClock();updateWindows();};
+
+  // ---------- personal recommendation ----------
+  var ppanel=document.getElementById('ppanel');
+  document.getElementById('ptoggle').onclick=function(){
+    if(ppanel.classList.contains('on')){history.back();}
+    else{ppanel.classList.add('on');history.pushState({panel:1},'');}
+  };
+  window.addEventListener('popstate',function(){ if(ppanel.classList.contains('on')) ppanel.classList.remove('on'); });
+
+  var PHASENOTE={
+    period:'تو روزهای پریود بدنت کم‌انرژی‌تره؛ با بدنت نجنگ، این هفته رو باهاش راه بیا',
+    follicular:'بعد از پریود انرژی وآستانه تحملت بالاتره؛ اگه بخوای می‌تونی کمی سخت‌تر بگیری.',
+    ovulation:'وسطِ سیکل اوجِ انرژیته؛ ولی لازم نیست خودت رو ثابت کنی!',
+    luteal:'هفتهٔ قبل پریود ولع‌‌ها و گرسنگیت بیشتره؛ فست رو سبک نگه دار و به خودت سخت نگیر.'
+  };
+  document.querySelectorAll('#genderPills .pill').forEach(function(p){
+    p.onclick=function(){
+      document.querySelectorAll('#genderPills .pill').forEach(function(x){x.classList.remove('on');});
+      p.classList.add('on');state.gender=p.dataset.g;
+      document.getElementById('phaseWrap').style.display=(state.gender==='f')?'block':'none';
+      if(state.gender==='m')state.phase=null;
+      refreshRec();
+    };
+  });
+  document.querySelectorAll('#expPills .pill').forEach(function(p){
+    p.onclick=function(){
+      document.querySelectorAll('#expPills .pill').forEach(function(x){x.classList.remove('on');});
+      p.classList.add('on');state.exp=p.dataset.e;refreshRec();
+    };
+  });
+  document.querySelectorAll('#phasePills .pill').forEach(function(p){
+    p.onclick=function(){
+      document.querySelectorAll('#phasePills .pill').forEach(function(x){x.classList.remove('on');});
+      p.classList.add('on');state.phase=p.dataset.p;
+      var n=document.getElementById('phaseNote');n.style.display='block';n.textContent=PHASENOTE[state.phase];
+      refreshRec();
+    };
+  });
+  function recommend(){
+    if(state.gender==='m'){
+      if(state.exp==='new') return {r:14,why:'برای شروع، ۱۴/۱۰یا ۱۲/۱۲  خوبه. با ۱۶/۸ قهرمان‌بازی در نیار؛ چند هفته که گذشت، اگه خواستی یه پله برو بالاتر.'};
+      if(state.exp==='exp') return {r:16,why:'اگه سابقه فستینگ داری،  ۱۶/۸ منطقیه. ولی اگه تو خواب یا دریافت پروتیین روزانه به مشکل خوردی، بی‌خجالت برگرد به ۱۴/۱۰.'};
+      return null;
+    }
+    if(state.gender==='f'){
+      if(!state.phase) return null;
+      if(state.phase==='period') return {r:12,why:'روزهای پریود، فست رو یا سبک کن یا کلا نگی. ۱۲/۱۲ همونیه که الان بدنت لازم داره؛ این هوشمندی تو رو میرسونه، نه کم کاریت رو.'};
+      if(state.phase==='luteal') return {r:14,why:'هفتهٔ قبل پریود معمولا ولع بالاست. ۱۴/۱۰ سقفِ خوبیه؛ فستت رو سنگین نکن و اگه گرسنه شدی و لغزیدی خودت رو سرزنش نکن.'};
+      if(state.phase==='ovulation') return {r:14,why:'اوجِ انرژیته و ۱۴/۱۰ راحت جواب می‌ده. واقعا لازم نیست سخت‌ترش کنی.'};
+      if(state.phase==='follicular') return state.exp==='exp'?{r:16,why:'تو فاز فولیکولی بدنت کشش بیشتری داره؛ اگه خوابت خوبه، ۱۶/۸ این روزها اوکیه.'}:{r:14,why:'بعد از پریود حساسیت انسولین بهتره و ۱۴/۱۰ شروعِ خوبیه. عجله برای ۱۶/۸ نکن.'};
+    }
+    return null;
+  }
+  function refreshRec(){
+    var rec=recommend();
+    document.querySelectorAll('#ratios .rat').forEach(function(el){el.classList.remove('recommended');});
+    var wb=document.getElementById('whyBox');
+    if(rec){
+      document.querySelectorAll('#ratios .rat').forEach(function(el){el.classList.toggle('recommended',+el.dataset.r===rec.r);});
+      wb.style.display='block';wb.textContent=rec.why;
+      state.ratio=rec.r;state.start=DEFSTART[rec.r];selectRatioUI();drawClock();updateWindows();
+    } else { wb.style.display='none'; }
+  }
+
+  // ---------- fast timer ----------
+  var STAGES=[
+    {h:0, t:'ساعتِ اول‌ها — هضم', b:'بدنت داره غذای آخر رو هضم می‌کنه و قند خونت آروم استفاده می‌شه. کارِ خاصی لازم نیست؛ فقط آب بخور.'},
+    {h:3, t:'حدودِ ۳ تا ۶ ساعت — آروم‌شدن انسولین', b:'قند خونت داره برمی‌گرده به حالت عادی و انسولین پایین میاد. اگه حسِ گرسنگی اومد، اغلب عادتِ ساعتیه نه نیازِ واقعی — یه لیوان آب یا چای بدونِ شیر امتحان کن.'},
+    {h:6, t:'حدودِ ۶ تا ۹ ساعت — کم‌شدن ذخیرهٔ قند', b:'ذخیرهٔ قندِ کبدت داره کم می‌شه. ممکنه یه موجِ گرسنگی بیاد؛ این موج معمولاً ۱۰ تا ۲۰ دقیقه‌ست و رد می‌شه. سرت رو با یه کار گرم کن.'},
+    {h:9, t:'حدودِ ۹ تا ۱۲ ساعت — تعویضِ دنده', b:'بدنت کم‌کم به‌جای قند می‌ره سراغِ چربی. خیلی‌ها اینجا یه آرامش یا تمرکزِ تازه حس می‌کنن.'},
+    {h:12, t:'حدودِ ۱۲ تا ۱۴ ساعت — سوئیچِ متابولیک', b:'سوئیچِ متابولیک داره روشن می‌شه و چربی‌سوزی جدی‌تر شده. این همون بخشِ ارزشمندِ فسته.'},
+    {h:14, t:'۱۴ ساعت به بعد — فازِ چربی‌سوزی', b:'حسابی توی فازِ چربی‌سوزی هستی و تمیزکاریِ سلولی شروع شده. نزدیکِ پنجرهٔ خوردنتی؛ همین‌قدر کافیه.'}
+  ];
+  var DONE={t:'به پنجرهٔ خوردنت رسیدی', b:'بازه‌ای که انتخاب کرده بودی کامل شد. حالا خوردن نقشه‌ست، نه شکست. وعده‌ات رو با پروتئین و سبزی شروع کن و سنگین نکن.'};
+
+  var timer={startTs:null,int:null,lastStage:-99};
+  function lsGet(k){try{return localStorage.getItem(k);}catch(e){return null;}}
+  function lsSet(k,v){try{localStorage.setItem(k,v);}catch(e){}}
+  function lsDel(k){try{localStorage.removeItem(k);}catch(e){}}
+
+  function stageFor(hrs,target){
+    if(hrs>=target) return {idx:99,s:DONE};
+    var cur=STAGES[0],idx=0;
+    for(var i=0;i<STAGES.length;i++){if(hrs>=STAGES[i].h){cur=STAGES[i];idx=i;}}
+    return {idx:idx,s:cur};
+  }
+  function tick(){
+    if(!timer.startTs)return;
+    var ms=Date.now()-timer.startTs;
+    var totalMin=Math.floor(ms/60000);
+    var hrs=Math.floor(totalMin/60), mins=totalMin%60, secs=Math.floor(ms/1000)%60;
+    var target=state.ratio;
+    document.getElementById('elapsed').textContent=fa(hrs)+':'+fa(pad(mins));
+    document.getElementById('elapsedSec').textContent=fa(pad(secs))+' ثانیه — از شروعِ فست';
+    var hrsF=ms/3600000;
+    var ratio=Math.min(hrsF/target,1);
+    var bar=document.getElementById('bar');
+    bar.style.width=(ratio*100).toFixed(1)+'%';
+    bar.style.background=ratio>=1?'#c88f6a':'#8aa472';
+    document.getElementById('barLbl').textContent=ratio>=1?('بازهٔ '+fa(target)+' ساعته کامل شد'):('بازهٔ هدف: '+fa(target)+' ساعت — '+fa(Math.max(0,Math.ceil(target-hrsF)))+' ساعت مونده');
+    var st=stageFor(hrsF,target);
+    document.getElementById('stageBox').style.display='block';
+    document.getElementById('stageTitle').textContent=st.s.t;
+    document.getElementById('stageBody').textContent=st.s.b;
+    if(st.idx!==timer.lastStage){
+      if(timer.lastStage!==-99) notify(st.s.t,st.s.b);
+      timer.lastStage=st.idx;
+    }
+  }
+  function startTicking(){
+    if(timer.int)clearInterval(timer.int);
+    timer.lastStage=-99;tick();timer.int=setInterval(tick,1000);
+    document.getElementById('timerBtns').innerHTML='<button class="tbtn stop" id="endFast">پایانِ فست</button><button class="tbtn ghost" id="resetFast">صفر کن</button>';
+    document.getElementById('endFast').onclick=endFast;
+    document.getElementById('resetFast').onclick=endFast;
+    if('Notification' in window && Notification.permission==='default'){
+      document.getElementById('remindBtn').style.display='inline';
+    }
+  }
+  function startFast(){timer.startTs=Date.now();lsSet('fl_fast_start',timer.startTs);startTicking();}
+  function endFast(){
+    timer.startTs=null;if(timer.int)clearInterval(timer.int);lsDel('fl_fast_start');
+    document.getElementById('elapsed').textContent='۰:۰۰';
+    document.getElementById('elapsedSec').textContent='هنوز شروع نشده';
+    document.getElementById('bar').style.width='0';
+    document.getElementById('stageBox').style.display='none';
+    document.getElementById('barLbl').textContent='بازهٔ هدف: '+fa(state.ratio)+' ساعت';
+    document.getElementById('remindBtn').style.display='none';
+    document.getElementById('timerBtns').innerHTML='<button class="tbtn start" id="startFast">شروعِ فست</button>';
+    document.getElementById('startFast').onclick=startFast;
+  }
+  function notify(t,b){
+    if('Notification' in window && Notification.permission==='granted'){
+      try{new Notification(t,{body:b});}catch(e){}
+    }
+  }
+  document.getElementById('startFast').onclick=startFast;
+  document.getElementById('remindBtn').onclick=function(){
+    if('Notification' in window){Notification.requestPermission().then(function(p){if(p==='granted')document.getElementById('remindBtn').style.display='none';});}
+  };
+
+  // ---------- init ----------
+  history.replaceState({base:1},'');
+  selectRatioUI();drawClock();updateWindows();
+  var saved=lsGet('fl_fast_start');
+  if(saved){timer.startTs=+saved;startTicking();}
+})();
+</script>
+<script>
+(function(){
+  function applyTheme(t){
+    var shad=(t==='shad');
+    document.body.classList.toggle('shad',shad);
+    var m=document.getElementById('thm-minimal'),s=document.getElementById('thm-shad');
+    if(m)m.classList.toggle('on',!shad);
+    if(s)s.classList.toggle('on',shad);
+  }
+  window.setTheme=function(t){applyTheme(t);try{localStorage.setItem('fl_theme',t);}catch(e){}};
+  try{applyTheme(localStorage.getItem('fl_theme')||'minimal');}catch(e){applyTheme('minimal');}
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>پروتئین‌یار — فست لایف</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+  :root{
+    --bg:#e9ebf0; --lt:#ffffff; --dk:#c4c8d2;
+    --ink:#4a4e58; --ink-d:#363941; --muted:#969ca8; --line:#d7dae1;
+    --sage:#8aa472; --sage-d:#5f7a45; --warm:#c88f6a;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{font-family:'Vazirmatn',Tahoma,sans-serif;background:var(--bg);color:var(--ink);line-height:1.85;direction:rtl;text-align:right;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:500px;margin:0 auto;padding:24px 16px 80px}
+
+  header{text-align:center;margin-bottom:4px}
+  h1{font-size:27px;font-weight:800;color:var(--ink-d);margin:0}
+  .sub{color:var(--muted);font-size:13.5px;margin:4px 0 0;font-weight:600}
+  .today{color:var(--muted);font-size:12px;margin-top:4px}
+
+  .hero{margin:16px 2px;padding:18px 20px;border-radius:24px;background:var(--bg);box-shadow:6px 6px 14px var(--dk),-6px -6px 14px var(--lt)}
+  .hero .eye{font-size:11px;font-weight:800;color:var(--sage-d);letter-spacing:.3px}
+  .hero h2{margin:6px 0 4px;font-size:18px;font-weight:800;color:var(--ink-d)}
+  .hero p{margin:0;font-size:12.5px;color:var(--muted);line-height:1.95}
+
+  .card{background:var(--bg);border-radius:24px;padding:20px 18px;margin:14px 2px;box-shadow:6px 6px 14px var(--dk),-6px -6px 14px var(--lt)}
+  .sechead{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:16px}
+  .sechead h3{margin:0;font-size:16px;font-weight:800;color:var(--ink-d)}
+  .sechead p{margin:3px 0 0;font-size:11.5px;color:var(--muted)}
+  .step{flex:0 0 auto;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:var(--sage-d);box-shadow:inset 3px 3px 6px var(--dk),inset -3px -3px 6px var(--lt)}
+
+  .field{margin:16px 0}
+  .lblrow{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+  .lblrow label{font-size:13px;font-weight:800;color:var(--ink-d)}
+  .wbox{display:flex;align-items:center;gap:6px;border-radius:14px;padding:6px 12px;box-shadow:inset 3px 3px 7px var(--dk),inset -3px -3px 7px var(--lt)}
+  .wbox input{width:54px;border:none;background:transparent;font-family:inherit;font-size:18px;font-weight:800;color:var(--ink-d);text-align:center;outline:none}
+  .wbox span{font-size:11px;color:var(--muted)}
+  input[type=range]{width:100%;accent-color:var(--sage);height:6px}
+  .rlabels{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:4px}
+
+  .seg{display:grid;gap:8px}
+  .seg.c4{grid-template-columns:repeat(2,1fr)}
+  .seg.c3{grid-template-columns:repeat(3,1fr)}
+  .choice{background:var(--bg);border:none;border-radius:16px;padding:12px 8px;font-family:inherit;cursor:pointer;text-align:center;color:var(--ink);box-shadow:4px 4px 9px var(--dk),-4px -4px 9px var(--lt);transition:.16s}
+  .choice:active{transform:scale(.98)}
+  .choice .ci{display:block;font-size:17px;color:var(--sage-d);margin-bottom:3px}
+  .choice b{display:block;font-size:12.5px;font-weight:700}
+  .choice small{display:block;margin-top:2px;font-size:9.5px;color:var(--muted);line-height:1.5}
+  .choice.on{box-shadow:inset 4px 4px 9px var(--dk),inset -4px -4px 9px var(--lt)}
+  .choice.on b{color:var(--sage-d)}
+
+  .goalbox{margin-top:16px;padding:15px 16px;border-radius:18px;box-shadow:inset 4px 4px 10px var(--dk),inset -4px -4px 10px var(--lt)}
+  .goaltop{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .goallbl{font-size:11.5px;color:var(--muted);font-weight:700}
+  .goalnum{font-size:25px;font-weight:800;color:var(--sage-d);line-height:1.3}
+  .goalnum small{font-size:12px;font-weight:600;color:var(--muted)}
+  .goalbadge{flex:0 0 auto;padding:5px 10px;border-radius:99px;font-size:10px;font-weight:800;color:var(--sage-d);box-shadow:3px 3px 7px var(--dk),-3px -3px 7px var(--lt)}
+  .goalnote{margin:8px 0 0;font-size:11.5px;color:var(--muted);line-height:1.9}
+  .scinote{margin:12px 2px 0;font-size:10.5px;color:var(--muted);line-height:1.95}
+  .scinote a{color:var(--sage-d);font-weight:700;text-decoration:none}
+
+  /* dashboard */
+  .dash{display:flex;align-items:center;gap:18px}
+  .ring{position:relative;flex:0 0 auto;width:118px;height:118px}
+  .ring svg{width:118px;height:118px;transform:rotate(-90deg)}
+  .ring .track{fill:none;stroke:var(--bg);stroke-width:13}
+  .ring .val{fill:none;stroke:var(--sage);stroke-width:13;stroke-linecap:round;transition:.45s}
+  .ringc{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .ringc b{font-size:25px;font-weight:800;color:var(--ink-d);line-height:1}
+  .ringc b small{font-size:13px}
+  .ringc span{font-size:10.5px;color:var(--muted);margin-top:2px}
+  .dinfo{flex:1;min-width:0}
+  .dinfo h3{margin:0;font-size:15px;font-weight:800;color:var(--ink-d)}
+  .dinfo .ptext{margin:3px 0 10px;font-size:11.5px;color:var(--muted);line-height:1.8}
+  .stats{display:flex;gap:8px}
+  .stat{flex:1;border-radius:14px;padding:9px 6px;text-align:center;box-shadow:inset 3px 3px 6px var(--dk),inset -3px -3px 6px var(--lt)}
+  .stat span{display:block;font-size:9.5px;color:var(--muted)}
+  .stat strong{display:block;font-size:13px;color:var(--ink-d);font-weight:800;margin-top:2px}
+  .tip{margin-top:14px;font-size:11.5px;color:var(--sage-d);font-weight:600;line-height:1.85;padding:10px 12px;border-radius:14px;box-shadow:inset 3px 3px 7px var(--dk),inset -3px -3px 7px var(--lt)}
+
+  /* planner */
+  .tools{display:flex;gap:6px;flex-wrap:wrap}
+  .softbtn{background:var(--bg);border:none;border-radius:999px;font-family:inherit;font-size:11px;font-weight:700;color:var(--sage-d);cursor:pointer;padding:9px 12px;box-shadow:3px 3px 7px var(--dk),-3px -3px 7px var(--lt)}
+  .softbtn.icn{color:var(--muted);width:36px;padding:9px 0;text-align:center}
+  .softbtn:active{box-shadow:inset 3px 3px 6px var(--dk),inset -3px -3px 6px var(--lt)}
+  .mtabs{display:flex;gap:6px;padding:8px;border-radius:999px;box-shadow:inset 4px 4px 9px var(--dk),inset -4px -4px 9px var(--lt);margin-bottom:14px}
+  .mtab{flex:1;background:var(--bg);border:none;border-radius:999px;padding:9px 2px;font-family:inherit;cursor:pointer;color:var(--muted);text-align:center;transition:.16s}
+  .mtab b{display:block;font-size:11.5px;font-weight:700}
+  .mtab small{display:block;font-size:9px;margin-top:1px}
+  .mtab.on{color:var(--sage-d);box-shadow:4px 4px 8px var(--dk),-4px -4px 8px var(--lt)}
+  .mtab.on b{color:var(--sage-d)}
+  .mealhead{display:flex;align-items:center;justify-content:space-between;margin:2px 2px 10px;font-size:12px;font-weight:800;color:var(--ink-d)}
+  .mealhead span{color:var(--sage-d)}
+  .empty{text-align:center;color:var(--muted);font-size:12px;padding:16px 8px;border-radius:16px;box-shadow:inset 3px 3px 7px var(--dk),inset -3px -3px 7px var(--lt)}
+
+  .mitem{display:flex;align-items:center;gap:10px;padding:9px 8px;border-radius:16px;margin-bottom:9px;box-shadow:4px 4px 9px var(--dk),-4px -4px 9px var(--lt);flex-wrap:wrap}
+  .miname{flex:1;display:flex;align-items:center;gap:9px;min-width:120px}
+  .miname .mo{width:38px;height:38px;border-radius:50%;flex:0 0 auto;display:flex;align-items:center;justify-content:center;box-shadow:inset 3px 3px 6px var(--dk),inset -3px -3px 6px var(--lt)}
+  .miname .mo svg{width:25px;height:25px}
+  .miname b{font-size:12.5px;font-weight:700;color:var(--ink-d)}
+  .miname small{display:block;font-size:9.5px;color:var(--muted);font-weight:500}
+  .stepper{display:flex;align-items:center;gap:7px}
+  .stepper button{width:27px;height:27px;border:none;border-radius:9px;background:var(--bg);color:var(--sage-d);font-family:inherit;font-size:15px;font-weight:800;cursor:pointer;box-shadow:3px 3px 6px var(--dk),-3px -3px 6px var(--lt)}
+  .stepper button:active{box-shadow:inset 2px 2px 5px var(--dk),inset -2px -2px 5px var(--lt)}
+  .stepper .amt{min-width:70px;text-align:center;font-size:11px;color:var(--muted)}
+  .mipro{font-size:11px;font-weight:800;color:var(--sage-d);min-width:46px;text-align:center}
+  .rm{border:none;background:none;color:var(--warm);font-size:16px;cursor:pointer;padding:0 4px}
+  .pinput{width:46px;border:none;background:var(--bg);border-radius:8px;padding:3px;font-family:inherit;font-size:11px;text-align:center;color:var(--ink-d);box-shadow:inset 2px 2px 4px var(--dk),inset -2px -2px 4px var(--lt)}
+
+  /* library */
+  .search{display:flex;gap:8px;margin-bottom:12px}
+  .search input{flex:1;background:var(--bg);border:none;border-radius:14px;padding:11px 14px;font-family:inherit;font-size:13px;color:var(--ink);box-shadow:inset 3px 3px 7px var(--dk),inset -3px -3px 7px var(--lt);outline:none}
+  .catrow{display:flex;gap:8px;margin-bottom:14px}
+  .catchip{flex:1;background:var(--bg);border:none;border-radius:999px;padding:9px 4px;font-family:inherit;font-size:11.5px;font-weight:700;color:var(--muted);cursor:pointer;box-shadow:3px 3px 7px var(--dk),-3px -3px 7px var(--lt)}
+  .catchip.on{color:var(--sage-d);box-shadow:inset 3px 3px 7px var(--dk),inset -3px -3px 7px var(--lt)}
+  .fgroup{margin-bottom:16px}
+  .fgtitle{font-size:12px;font-weight:800;color:var(--ink-d);margin:0 2px 11px;display:flex;align-items:center;gap:8px}
+  .fgtitle::before{content:'';width:5px;height:15px;border-radius:3px;background:var(--sage)}
+  .fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:11px}
+  .fshell{position:relative}
+  .fcard{width:100%;background:var(--bg);border:none;border-radius:18px;padding:12px 6px 10px;cursor:pointer;font-family:inherit;display:flex;flex-direction:column;align-items:center;gap:6px;box-shadow:5px 5px 11px var(--dk),-5px -5px 11px var(--lt);transition:.14s}
+  .fcard:active{transform:scale(.97)}
+  .fcard .mo{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:inset 3px 3px 7px var(--dk),inset -3px -3px 7px var(--lt)}
+  .fcard .mo svg{width:31px;height:31px}
+  .fcard b{font-size:11.5px;font-weight:700;color:var(--ink-d);text-align:center}
+  .fcard .fp{font-size:9.5px;color:var(--muted);text-align:center;line-height:1.4}
+  .fhelp{position:absolute;top:6px;left:6px;width:20px;height:20px;border-radius:50%;border:none;background:var(--bg);color:var(--sage-d);font-size:11px;font-weight:800;cursor:pointer;box-shadow:2px 2px 5px var(--dk),-2px -2px 5px var(--lt);z-index:2}
+  .noresult{text-align:center;color:var(--muted);font-size:12px;padding:18px}
+
+  .srcnote{font-size:10.5px;color:var(--muted);line-height:1.95;margin:6px 2px}
+  .srcnote a{color:var(--sage-d);font-weight:700;text-decoration:none}
+  .helpnote{font-size:11px;color:var(--muted);text-align:center;margin-top:28px;padding-top:16px;line-height:2;box-shadow:inset 0 9px 12px -12px var(--dk)}
+
+  /* summary (screenshot) */
+  .summaryview{display:none;max-width:500px;margin:0 auto;padding:18px 16px 60px}
+  .listtop{display:flex;gap:7px;justify-content:flex-end;margin:6px 2px 10px}
+  .navbtn{background:var(--bg);border:none;border-radius:999px;font-family:inherit;font-size:11.5px;font-weight:700;color:var(--muted);cursor:pointer;padding:9px 13px;box-shadow:3px 3px 7px var(--dk),-3px -3px 7px var(--lt)}
+  .navbtn.prime{color:var(--sage-d)}
+  .navbtn:active{box-shadow:inset 3px 3px 6px var(--dk),inset -3px -3px 6px var(--lt)}
+  .scard{background:var(--bg);border-radius:26px;padding:22px 18px;margin:0 2px;box-shadow:7px 7px 16px var(--dk),-7px -7px 16px var(--lt)}
+  .shead{text-align:center;border-bottom:1.5px dashed var(--line);padding-bottom:14px;margin-bottom:10px}
+  .shead .st{font-size:18px;font-weight:800;color:var(--ink-d)}
+  .shead .sc{font-size:12px;color:var(--muted);font-weight:600;margin-top:3px}
+  .sbig{font-size:14px;font-weight:800;color:var(--sage-d);margin-top:6px}
+  .sgrp{margin-top:14px}
+  .sgrp .gn{font-size:12px;font-weight:800;color:var(--sage-d);border-bottom:1px solid var(--line);padding-bottom:4px;margin-bottom:6px;display:flex;justify-content:space-between}
+  .sitem{display:flex;align-items:center;gap:9px;padding:4px 1px;font-size:12.5px;font-weight:600;color:var(--ink)}
+  .sitem .so{width:26px;height:26px;border-radius:50%;flex:0 0 auto;display:flex;align-items:center;justify-content:center;box-shadow:2px 2px 4px var(--dk),-2px -2px 4px var(--lt)}
+  .sitem .so svg{width:18px;height:18px}
+  .sitem .sg{margin-right:auto;color:var(--muted);font-size:11px;font-weight:700}
+  .sfoot{text-align:center;font-size:11px;color:var(--muted);font-weight:600;margin-top:16px;padding-top:12px;border-top:1.5px dashed var(--line)}
+  .sfoot b{color:var(--sage-d)}
+
+  /* modals */
+  .backdrop{position:fixed;inset:0;background:rgba(54,57,65,.45);display:none;align-items:center;justify-content:center;padding:18px;z-index:30}
+  .backdrop.open{display:flex}
+  .modal{width:100%;max-width:420px;background:var(--bg);border-radius:24px;padding:20px 20px 22px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+  .modal-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+  .modal-h h3{margin:0;font-size:16px;font-weight:800;color:var(--ink-d)}
+  .closex{width:32px;height:32px;border:none;border-radius:10px;background:var(--bg);color:var(--ink);font-size:16px;cursor:pointer;box-shadow:3px 3px 7px var(--dk),-3px -3px 7px var(--lt)}
+  .ffield{margin-bottom:12px}
+  .ffield label{display:block;font-size:11px;font-weight:700;color:var(--muted);margin-bottom:6px}
+  .ffield input{width:100%;background:var(--bg);border:none;border-radius:12px;padding:11px 13px;font-family:inherit;font-size:13px;color:var(--ink-d);box-shadow:inset 3px 3px 7px var(--dk),inset -3px -3px 7px var(--lt);outline:none}
+  .modal-act{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}
+  .btnp{background:var(--bg);border:none;border-radius:12px;padding:11px 18px;font-family:inherit;font-size:13px;font-weight:800;color:var(--sage-d);cursor:pointer;box-shadow:4px 4px 9px var(--dk),-4px -4px 9px var(--lt)}
+  .btnp:active{box-shadow:inset 3px 3px 7px var(--dk),inset -3px -3px 7px var(--lt)}
+  .modalcopy{margin:0;font-size:12.5px;color:var(--ink);line-height:2;white-space:pre-line}
+  .modalsrc{margin:14px 0 0;padding-top:12px;border-top:1px solid var(--line);font-size:10px;color:var(--muted)}
+
+  .toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink-d);color:#fff;font-size:12px;font-weight:600;padding:10px 18px;border-radius:999px;opacity:0;pointer-events:none;transition:.25s;z-index:40}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  /* ===== سوییچِ تم ===== */
+  .themebar{display:flex;gap:5px;max-width:196px;margin:12px auto 4px;padding:4px;border-radius:999px;background:var(--bg);box-shadow:inset 2px 2px 6px var(--dk),inset -2px -2px 6px var(--lt)}
+  .themebtn{flex:1;border:none;background:transparent;font-family:inherit;font-size:12px;font-weight:800;color:var(--muted);padding:7px 6px;border-radius:999px;cursor:pointer;transition:.18s}
+  .themebtn.on{background:var(--bg);color:var(--ink-d);box-shadow:4px 4px 9px var(--dk),-4px -4px 9px var(--lt)}
+
+  /* =================== تمِ «پاستیلی» =================== */
+  body.shad{--bg:#FAF6EF;--lt:#ffffff;--dk:#e6dff0;--ink:#5b5560;--ink-d:#3f3a46;--dark:#3f3a46;--muted:#9a93a6;--line:#ece6f2;background:#FAF6EF}
+  body.shad::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background:
+    radial-gradient(440px 400px at 14% 8%,rgba(255,173,173,.55),transparent 60%),
+    radial-gradient(420px 380px at 86% 12%,rgba(255,214,165,.55),transparent 60%),
+    radial-gradient(460px 420px at 93% 50%,rgba(253,255,182,.62),transparent 60%),
+    radial-gradient(440px 420px at 8% 58%,rgba(228,241,238,.75),transparent 60%),
+    radial-gradient(470px 440px at 72% 92%,rgba(217,237,248,.68),transparent 62%),
+    radial-gradient(440px 420px at 22% 96%,rgba(222,218,244,.68),transparent 62%)}
+  body.shad .themebar{background:#EFE7F4;box-shadow:inset 2px 2px 6px rgba(160,150,190,.3),inset -2px -2px 6px rgba(255,255,255,.9)}
+  body.shad .themebtn.on{background:linear-gradient(145deg,#FFD6A5,#DEDAF4);color:#5b4452;box-shadow:0 8px 16px -5px rgba(200,160,200,.55),inset 0 2px 0 rgba(255,255,255,.6)}
+
+  body.shad .wrap,body.shad .summaryview{position:relative;z-index:1}
+  body.shad .hero,body.shad .card,body.shad .scard,body.shad .modal{background:linear-gradient(160deg,rgba(255,255,255,.88),rgba(255,255,255,.64));-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.9);box-shadow:0 16px 32px -12px rgba(168,150,200,.4),inset 0 2px 0 rgba(255,255,255,.92)}
+  body.shad .choice,body.shad .softbtn,body.shad .mtab,body.shad .catchip,body.shad .navbtn,body.shad .btnp,body.shad .stepper button,body.shad .closex,body.shad .fcard{background:linear-gradient(160deg,rgba(255,255,255,.92),rgba(255,255,255,.68));border:1px solid rgba(255,255,255,.88);box-shadow:0 10px 20px -8px rgba(168,150,200,.42),inset 0 2px 0 rgba(255,255,255,.9)}
+  body.shad .mtabs,body.shad .goalbox,body.shad .tip,body.shad .stat,body.shad .wbox,body.shad .search input,body.shad .empty,body.shad .fcard .mo,body.shad .miname .mo,body.shad .pinput,body.shad .ffield input{background:#F4F0FB;box-shadow:inset 0 2px 6px rgba(160,150,190,.28)}
+  body.shad .mitem{background:linear-gradient(160deg,rgba(255,255,255,.92),rgba(255,255,255,.68));box-shadow:0 10px 20px -8px rgba(168,150,200,.4),inset 0 2px 0 rgba(255,255,255,.9)}
+  body.shad .choice.on,body.shad .catchip.on,body.shad .mtab.on{background:linear-gradient(145deg,#FFD6A5,#DEDAF4);box-shadow:0 9px 18px -6px rgba(200,160,200,.5),inset 0 2px 0 rgba(255,255,255,.6)}
+  body.shad .goalbadge{background:linear-gradient(160deg,#ffffff,#FFF3E6);box-shadow:0 7px 15px -5px rgba(220,180,140,.4),inset 0 2px 0 rgba(255,255,255,.9)}
+  body.shad input[type=range]{accent-color:#c79bd0}
+  body.shad .toast{background:#6f5a86}
+</style>
+</head>
+<body>
+<div class="wrap" id="mainView">
+  <header>
+    <h1>پروتئین‌یار</h1>
+    <div class="today" id="today"></div>
+  </header>
+
+  <div class="themebar">
+    <button class="themebtn on" id="thm-minimal" type="button" onclick="setTheme('minimal')">مینیمال</button>
+    <button class="themebtn" id="thm-shad" type="button" onclick="setTheme('shad')">پاستیلی</button>
+  </div>
+
+  <div class="hero">
+    <h2>پروتئین امروزت رو راحت بچین.</h2>
+    <p>میزان پروتئین دریافتی آدمها فرق میکنه. من بر اساس وزن و هدفی که داری، بهت میگم چقدر در روز باید پروتئین مصرف کنی</p>
+  </div>
+
+  <section class="card">
+    <div class="sechead">
+      <div><h3>روزی چقدر پروتئین؟</h3><p>چندتا انتخاب کوتاه کن تا عددت دربیاد</p></div>
+      <span class="step">۱</span>
+    </div>
+
+    <div class="field">
+      <div class="lblrow">
+        <label for="weightNumber">وزنت چقدره؟</label>
+        <div class="wbox"><input id="weightNumber" type="number" min="35" max="220" value="80" inputmode="numeric"><span>کیلو</span></div>
+      </div>
+      <input id="weightRange" type="range" min="35" max="220" value="80" step="1">
+      <div class="rlabels"><span>۳۵</span><span>۲۲۰ کیلو</span></div>
+    </div>
+
+    <div class="field">
+      <div class="lblrow"><label>بیشتر چه مدل ورزشی می‌کنی؟</label></div>
+      <div class="seg c4" id="activityChoices">
+        <button class="choice" type="button" data-value="none"><span class="ci">○</span><b>ورزش نمی‌کنم</b><small>تمرین منظم ندارم</small></button>
+        <button class="choice" type="button" data-value="cardio"><span class="ci">⌁</span><b>هوازی</b><small>دویدن، دوچرخه، شنا</small></button>
+        <button class="choice on" type="button" data-value="mixed"><span class="ci">◇</span><b>ترکیبی</b><small>هم هوازی، هم قدرتی</small></button>
+        <button class="choice" type="button" data-value="strength"><span class="ci">△</span><b>قدرتی</b><small>وزنه و تمرین مقاومتی</small></button>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="lblrow"><label>هدفت چیه؟</label></div>
+      <div class="seg c3" id="goalChoices">
+        <button class="choice" type="button" data-value="loss"><span class="ci">↘</span><b>چربی‌سوزی</b><small>کم‌کردن چربی، حفظ عضله</small></button>
+        <button class="choice on" type="button" data-value="maintain"><span class="ci">↔</span><b>حفظ وزن</b><small>همین شرایط رو نگه دارم</small></button>
+        <button class="choice" type="button" data-value="gain"><span class="ci">↗</span><b>عضله‌سازی</b><small>عضله و ریکاوری بیشتر</small></button>
+      </div>
+    </div>
+
+    <div class="goalbox">
+      <div class="goaltop">
+        <div><div class="goallbl">پروتئین پیشنهادی روزانه</div><div class="goalnum"><span id="goalRange">۱۲۰ تا ۱۴۴</span> <small>گرم</small></div></div>
+        <span class="goalbadge" id="goalRatio">۱٫۵ تا ۱٫۸ گرم/کیلو</span>
+      </div>
+      <p class="goalnote" id="goalExplanation">برای تمرین ترکیبی و حفظ وزن، این بازه انتخاب خوبیه.</p>
+    </div>
+    <p class="scinote">
+      مبنای محاسبه برای ورزشکارها: <a href="https://jissn.biomedcentral.com/articles/10.1186/s12970-017-0177-8" target="_blank" rel="noopener">بیانیهٔ رسمی ISSN دربارهٔ پروتئین و ورزش</a>. ISSN برای بیشتر ورزشکارها بازهٔ ۱٫۴ تا ۲ گرم به‌ازای هر کیلو را گفته؛ تقسیم‌بندیِ بالا نسخهٔ کاربردیِ همین بازه است. عدد پایهٔ فردِ بدون ورزش از <a href="https://www.nationalacademies.org/read/9956/chapter/15" target="_blank" rel="noopener">National Academies</a> گرفته شده.
+    </p>
+  </section>
+
+  <section class="card">
+    <div class="dash">
+      <div class="ring">
+        <svg viewBox="0 0 160 160"><circle class="track" cx="80" cy="80" r="67"></circle><circle class="val" id="progressRing" cx="80" cy="80" r="67"></circle></svg>
+        <div class="ringc"><b><span id="totalProtein">۰</span><small>٪</small></b><span>از هدف امروز</span></div>
+      </div>
+      <div class="dinfo">
+        <h3 id="progressTitle">شروع کنیم؟</h3>
+        <p class="ptext" id="progressText">اولین غذا رو به یکی از وعده‌هات اضافه کن.</p>
+        <div class="stats">
+          <div class="stat"><span>مصرف‌شده</span><strong><span id="consumed">۰</span> گرم</strong></div>
+          <div class="stat"><span>هدف وسط بازه</span><strong><span id="targetAmount">۱۳۲</span> گرم</strong></div>
+          <div class="stat"><span>مونده</span><strong><span id="remaining">۱۳۲</span> گرم</strong></div>
+        </div>
+      </div>
+    </div>
+    <div class="tip" id="distributionTip">پروتئینت رو بین ۳ تا ۴ وعده پخش کنی، راحت‌تر می‌رسونیش.</div>
+  </section>
+
+  <section class="card">
+    <div class="sechead">
+      <div><h3>وعده‌های امروزت</h3><p>غذا رو اضافه کن و مقدارش رو بالا پایین کن</p></div>
+      <div class="tools">
+        <button class="softbtn" id="customFoodBtn" type="button">＋ غذای خودم</button>
+        <button class="softbtn" id="summaryBtn" type="button">خلاصه و عکس</button>
+        <button class="softbtn icn" id="resetBtn" type="button" title="پاک‌کردن امروز">↻</button>
+      </div>
+    </div>
+    <div class="mtabs" id="mealTabs">
+      <button class="mtab on" type="button" data-meal="breakfast"><b>صبحانه</b><small><span>۰</span> گرم</small></button>
+      <button class="mtab" type="button" data-meal="lunch"><b>ناهار</b><small><span>۰</span> گرم</small></button>
+      <button class="mtab" type="button" data-meal="dinner"><b>شام</b><small><span>۰</span> گرم</small></button>
+      <button class="mtab" type="button" data-meal="snack"><b>میان‌وعده</b><small><span>۰</span> گرم</small></button>
+    </div>
+    <div class="mealhead"><span id="activeMealName">صبحانه</span><span><span id="activeMealTotal">۰</span> گرم</span></div>
+    <div id="mealContent"></div>
+  </section>
+
+  <section class="card">
+    <div class="sechead"><div><h3>منابع پروتئین</h3><p>روی هر کدام بزن تا به وعدهٔ فعال اضافه شود</p></div></div>
+    <div class="search"><input id="searchInput" type="search" placeholder="مثلاً مرغ، عدس یا ماست..."></div>
+    <div class="catrow" id="categoryFilter">
+      <button class="catchip on" type="button" data-cat="all">همه</button>
+      <button class="catchip" type="button" data-cat="animal">حیوانی</button>
+      <button class="catchip" type="button" data-cat="other">گیاهی و بقیه</button>
+    </div>
+    <div id="foods"></div>
+  </section>
+
+  <p class="srcnote"><b>منبع عدد غذاها:</b> داده‌های پایه از <a href="https://fdc.nal.usda.gov/" target="_blank" rel="noopener">USDA FoodData Central</a> گرفته و برای استفادهٔ روزمره گرد شده. مقدار واقعی با برند، نوع پخت و آبِ غذا کمی بالا پایین می‌شود؛ برای محصولات بسته‌بندی‌شده، عدد روی برچسبِ خودِ محصول دقیق‌تر است.</p>
+
+  <div class="helpnote">عددها برای اینه که چشمت اندازه‌ها رو یاد بگیره؛ نزدیکِ هدف هم کافیه و لازم نیست وسواس بگیری. اگر مشکل کلیوی داری یا باردار هستی، قبل از بالا بردن پروتئین با پزشکت مشورت کن.</div>
+</div>
+
+<div class="summaryview" id="summaryView"></div>
+
+<div class="backdrop" id="customModal">
+  <div class="modal">
+    <div class="modal-h"><h3>غذای خودم</h3><button class="closex" id="closeCustom" type="button">×</button></div>
+    <form id="customForm">
+      <div class="ffield"><label>اسم غذا</label><input id="cName" type="text" required placeholder="مثلاً پنکیک پروتئین"></div>
+      <div class="ffield"><label>پروتئینِ هر وعده (گرم)</label><input id="cProtein" type="number" min="0.1" max="300" step="0.1" required inputmode="decimal" placeholder="مثلاً ۲۴"></div>
+      <div class="ffield"><label>واحد (اختیاری)</label><input id="cUnit" type="text" placeholder="پیش‌فرض: وعده"></div>
+      <div class="modal-act"><button class="navbtn" id="cancelCustom" type="button">انصراف</button><button class="btnp" type="submit">اضافه کن</button></div>
+    </form>
+  </div>
+</div>
+
+<div class="backdrop" id="infoModal">
+  <div class="modal">
+    <div class="modal-h"><h3 id="infoTitle"></h3><button class="closex" id="closeInfo" type="button">×</button></div>
+    <p class="modalcopy" id="infoText"></p>
+    <p class="modalsrc">داده‌های پایه از USDA FoodData Central، گردشده برای استفادهٔ روزمره.</p>
+    <div class="modal-act"><button class="btnp" id="infoOk" type="button">باشه</button></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  "use strict";
+  var faD="۰۱۲۳۴۵۶۷۸۹";
+  var toFa=function(v){return String(v).replace(/[0-9]/g,function(d){return faD[d];});};
+  var fmt=function(v){return toFa(new Intl.NumberFormat("en-US",{maximumFractionDigits:1}).format(v)).replace(/\./g,"٫").replace(/,/g,"٬");};
+  var clamp=function(v,a,b){return Math.min(b,Math.max(a,v));};
+  var el=function(id){return document.getElementById(id);};
+  var esc=function(v){return String(v).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c];});};
+
+  var I={
+    egg:'<svg viewBox="0 0 44 44"><ellipse cx="22" cy="24" rx="12" ry="15" fill="#f4ead2" stroke="#cdbb97" stroke-width="1.6"/><ellipse cx="18" cy="19" rx="3.2" ry="4.5" fill="#fff" opacity=".55"/></svg>',
+    eggwhite:'<svg viewBox="0 0 44 44"><ellipse cx="22" cy="24" rx="12" ry="15" fill="#fbfaf6" stroke="#cdd2da" stroke-width="1.6"/><ellipse cx="18" cy="19" rx="3.2" ry="4.5" fill="#fff"/></svg>',
+    chickenthigh:'<svg viewBox="0 0 44 44"><circle cx="27" cy="17" r="11" fill="#e2b07a" stroke="#b07f47" stroke-width="1.6"/><rect x="6" y="25" width="17" height="6.5" rx="3.2" transform="rotate(-32 14 28)" fill="#efe3cb" stroke="#b07f47" stroke-width="1.6"/></svg>',
+    chicken:'<svg viewBox="0 0 44 44"><path d="M24 9c6 0 11 5 11 12 0 6-4 11-10 12-3 .5-6-1-8-3-1-1-3-1-4-3-2-3 0-7 2-8 1-1 1-3 2-5 1-3 4-5 5-5z" fill="#e8c39a" stroke="#b07f47" stroke-width="1.6"/><path d="M22 17c-2 1-4 4-3 7" fill="none" stroke="#c99a64" stroke-width="1.4" stroke-linecap="round"/></svg>',
+    turkey:'<svg viewBox="0 0 44 44"><ellipse cx="22" cy="26" rx="13" ry="8.5" fill="#d8a36a" stroke="#a9763f" stroke-width="1.6"/><circle cx="22" cy="20" r="6.2" fill="#e0b27e" stroke="#a9763f" stroke-width="1.6"/><path d="M15 32 l-2 4 M29 32 l2 4" stroke="#a9763f" stroke-width="2.4" stroke-linecap="round"/></svg>',
+    meat:'<svg viewBox="0 0 44 44"><path d="M11 16 q-3 8 4 13 q9 5 16 -2 q4 -6 -2 -11 q-9 -6 -18 0 z" fill="#cf8a78" stroke="#a35949" stroke-width="1.6"/><circle cx="20" cy="22" r="2.4" fill="#e3b3a8"/></svg>',
+    fish:'<svg viewBox="0 0 44 44"><ellipse cx="20" cy="22" rx="13" ry="8.5" fill="#a7c4d2" stroke="#5f7e8d" stroke-width="1.6"/><polygon points="32,22 41,15 41,29" fill="#a7c4d2" stroke="#5f7e8d" stroke-width="1.6"/><circle cx="13" cy="20" r="1.7" fill="#3c5560"/></svg>',
+    tuna:'<svg viewBox="0 0 44 44"><rect x="12" y="14" width="20" height="18" rx="3" fill="#cfd3d9" stroke="#8a8f99" stroke-width="1.6"/><ellipse cx="22" cy="14" rx="10" ry="3.2" fill="#e2e4e8" stroke="#8a8f99" stroke-width="1.6"/><path d="M16 23 q6 -3 12 0" stroke="#aeb3bb" stroke-width="1.4" fill="none"/></svg>',
+    shrimp:'<svg viewBox="0 0 44 44"><path d="M29 14 q-13 1 -15 12 q-1 8 8 8 q9 0 11 -7 q-7 3 -11 -1 q-4 -5 1 -9 q4 -3 6 -3z" fill="#e89a86" stroke="#b35e48" stroke-width="1.5"/><path d="M29 14 l4 -3 M14 33 l-2 3" stroke="#b35e48" stroke-width="1.8" stroke-linecap="round"/></svg>',
+    yogurt:'<svg viewBox="0 0 44 44"><path d="M14 16 h16 l-2 16 h-12 z" fill="#fff" stroke="#cdbb97" stroke-width="1.6"/><ellipse cx="22" cy="16" rx="8" ry="2.6" fill="#fff" stroke="#cdbb97" stroke-width="1.6"/><rect x="17" y="21" width="10" height="4" rx="2" fill="#d9c6a0" opacity=".5"/></svg>',
+    milk:'<svg viewBox="0 0 44 44"><path d="M15 18 v15 h14 v-15 l-3 -5 h-8 z" fill="#eef1f5" stroke="#9aa0ab" stroke-width="1.6"/><path d="M15 18 h14" stroke="#9aa0ab" stroke-width="1.4"/><rect x="19" y="23" width="6" height="7" rx="1.4" fill="#b9c0cb" opacity=".6"/></svg>',
+    proteinmilk:'<svg viewBox="0 0 44 44"><rect x="17" y="9" width="10" height="4" rx="1.5" fill="#9aa0ab"/><path d="M16 15 q6 -2 12 0 v16 q0 3 -3 3 h-6 q-3 0 -3 -3 z" fill="#eef1f5" stroke="#8aa472" stroke-width="1.6"/><rect x="18" y="22" width="8" height="9" rx="1.5" fill="#8aa472" opacity=".55"/></svg>',
+    cheese:'<svg viewBox="0 0 44 44"><path d="M10 28 L31 15 L33 28 Z" fill="#ecc873" stroke="#bd982f" stroke-width="1.6" stroke-linejoin="round"/><circle cx="20" cy="24" r="1.9" fill="#d8ab3c"/><circle cx="26" cy="23" r="1.4" fill="#d8ab3c"/></svg>',
+    lentil:'<svg viewBox="0 0 44 44"><circle cx="16" cy="20" r="4.5" fill="#b5604c" stroke="#8a3f30" stroke-width="1.3"/><circle cx="25" cy="18" r="4.5" fill="#c97a5a" stroke="#8a3f30" stroke-width="1.3"/><circle cx="21" cy="26" r="4.5" fill="#b5604c" stroke="#8a3f30" stroke-width="1.3"/><circle cx="28" cy="26" r="4" fill="#c97a5a" stroke="#8a3f30" stroke-width="1.3"/></svg>',
+    chickpea:'<svg viewBox="0 0 44 44"><circle cx="16" cy="20" r="4.5" fill="#d8b87a" stroke="#a9853f" stroke-width="1.3"/><circle cx="25" cy="18" r="4.5" fill="#e0c48a" stroke="#a9853f" stroke-width="1.3"/><circle cx="21" cy="26" r="4.5" fill="#d8b87a" stroke="#a9853f" stroke-width="1.3"/></svg>',
+    bean:'<svg viewBox="0 0 44 44"><path d="M16 18 q-4 4 0 9 q5 3 8 -1 q-3 -1 -2 -5 q1 -3 4 -3 q-4 -3 -10 0z" fill="#b5604c" stroke="#8a3f30" stroke-width="1.4"/><path d="M25 17 q5 3 4 9 q-2 4 -7 3 q3 -1 3 -6 q0 -4 0 -6z" fill="#a8503c" stroke="#8a3f30" stroke-width="1.4"/></svg>',
+    tofu:'<svg viewBox="0 0 44 44"><rect x="12" y="14" width="20" height="17" rx="3" fill="#f6f3ea" stroke="#cdbb97" stroke-width="1.6"/><line x1="22" y1="14" x2="22" y2="31" stroke="#e2d8c0" stroke-width="1.2"/><line x1="12" y1="22" x2="32" y2="22" stroke="#e2d8c0" stroke-width="1.2"/></svg>',
+    soy:'<svg viewBox="0 0 44 44"><path d="M22 32 q-9 -3 -8 -13 q6 1 8 6 q2 -7 8 -9 q1 9 -8 16z" fill="#8aab63" stroke="#5f7a3f" stroke-width="1.5"/></svg>',
+    edamame:'<svg viewBox="0 0 44 44"><path d="M11 25 q2 -13 14 -13 q9 0 8 9 q-1 11 -14 10 q-9 -1 -8 -6z" fill="#9dbe73" stroke="#5f7a3f" stroke-width="1.6"/><circle cx="18" cy="21" r="2.3" fill="#5f7a3f"/><circle cx="25" cy="20" r="2.3" fill="#5f7a3f"/></svg>',
+    seitan:'<svg viewBox="0 0 44 44"><path d="M13 22 q2 -9 11 -8 q3 -4 8 -1 q3 4 -1 8 q3 6 -4 9 q-8 3 -13 -2 q-4 -2 -1 -6z" fill="#cdaf86" stroke="#9a7b54" stroke-width="1.6"/><path d="M18 20 l3 3 M24 19 l3 3" stroke="#9a7b54" stroke-width="1.1"/></svg>',
+    custom:'<svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="11" fill="none" stroke="#aab0bb" stroke-width="1.5" stroke-dasharray="3 3"/><path d="M22 17 v10 M17 22 h10" stroke="#969ca8" stroke-width="2" stroke-linecap="round"/></svg>'
+  };
+  var ico=function(id){return I[id]||I.custom;};
+
+  var mealNames={breakfast:"صبحانه",lunch:"ناهار",dinner:"شام",snack:"میان‌وعده"};
+  var baseFoods=[
+    {id:"egg",name:"تخم‌مرغ کامل",ic:"egg",category:"animal",serving:1,unit:"عدد",protein:6.3,step:1,info:"هر تخم‌مرغ درشت حدود ۶٫۳ گرم پروتئین داره. زرده و سفیده هر دو حساب شدن."},
+    {id:"eggwhite",name:"سفیدهٔ تخم‌مرغ",ic:"eggwhite",category:"animal",serving:1,unit:"عدد",protein:3.6,step:1,info:"هر سفیدهٔ تخم‌مرغ درشت حدود ۳٫۶ گرم پروتئین داره. اگه سفیدهٔ آماده می‌خری، عدد روی بسته رو هم چک کن."},
+    {id:"chicken",name:"سینه مرغ",ic:"chicken",category:"animal",serving:100,unit:"گرم",protein:31,step:50,info:"وزن پخته حساب شده. یه تکه تقریباً اندازهٔ کف دست، نزدیک ۱۰۰ گرمه و حدود ۳۱ گرم پروتئین داره."},
+    {id:"chicken-thigh",name:"ران مرغ",ic:"chickenthigh",category:"animal",serving:100,unit:"گرم",protein:26,step:50,info:"گوشت پختهٔ ران، بدون استخوان حساب شده. چون چربی بیشتری داره، پروتئینش از سینه مرغ یه کم کمتره."},
+    {id:"turkey",name:"بوقلمون",ic:"turkey",category:"animal",serving:100,unit:"گرم",protein:29,step:50,info:"وزن پخته و قسمت کم‌چرب حساب شده. هر ۱۰۰ گرم حدود ۲۹ گرم پروتئین داره."},
+    {id:"beef",name:"گوشت قرمز",ic:"meat",category:"animal",serving:100,unit:"گرم",protein:26,step:50,info:"وزن پخته حساب شده. چربی و مدل برش گوشت باعث می‌شه عدد واقعی یه کم فرق کنه."},
+    {id:"fish",name:"ماهی",ic:"fish",category:"animal",serving:100,unit:"گرم",protein:22,step:50,info:"وزن پخته حساب شده. بیشتر ماهی‌ها نزدیک همین عددن؛ ماهی سفید معمولاً کمی بیشتر و ماهی چرب ممکنه کمی کمتر باشه."},
+    {id:"tuna",name:"تن ماهی",ic:"tuna",category:"animal",serving:1,unit:"قوطی",protein:22,step:1,info:"یک قوطی معمولی بعد از آبکش حدود ۲۲ گرم پروتئین حساب شده. چون وزن قوطی‌ها فرق داره، برچسب محصول خودت دقیق‌تره."},
+    {id:"shrimp",name:"میگو",ic:"shrimp",category:"animal",serving:100,unit:"گرم",protein:24,step:50,info:"وزن پخته حساب شده. هر ۱۰۰ گرم میگوی پخته حدود ۲۴ گرم پروتئین داره."},
+    {id:"greek-yogurt",name:"ماست یونانی",ic:"yogurt",category:"animal",serving:1,unit:"کاسه کوچک",protein:15,step:1,info:"منظور ماست یونانی یا ماست چکیده‌ست، نه ماست معمولی آبکی. یک کاسه کوچک حدود ۱۵ گرم حساب شده، ولی برندها با هم فرق دارن."},
+    {id:"milk",name:"شیر معمولی",ic:"milk",category:"animal",serving:1,unit:"لیوان",protein:8,step:1,info:"یک لیوان معمولی، حدود ۲۵۰ میلی‌لیتر، نزدیک ۸ گرم پروتئین داره. کم‌چرب یا پرچرب بودن معمولاً فرق زیادی در پروتئین ایجاد نمی‌کنه."},
+    {id:"protein-milk",name:"شیر پروتئینی",ic:"proteinmilk",category:"animal",serving:1,unit:"بطری",protein:26,step:1,editableProtein:true,info:"برندها خیلی با هم فرق دارن. وقتی اضافه‌اش کردی، عدد پروتئینِ نوشته‌شده روی بطری خودت رو وارد کن."},
+    {id:"cottage",name:"پنیر",ic:"cheese",category:"animal",serving:1,unit:"تکه",protein:4,step:1,info:"یک تکه تقریباً اندازهٔ قوطی کبریت حدود ۴ گرم حساب شده. پنیر سفت، فتا و پنیر محلی معمولاً پروتئین بیشتری از پنیر خامه‌ای و لبنه دارن."},
+    {id:"lentil",name:"عدس",ic:"lentil",category:"other",serving:150,unit:"گرم",protein:13.5,step:50,info:"وزن پخته حساب شده. ۱۵۰ گرم عدس پخته حدود ۱۳٫۵ گرم پروتئین داره."},
+    {id:"chickpea",name:"نخود",ic:"chickpea",category:"other",serving:150,unit:"گرم",protein:13.3,step:50,info:"وزن پخته حساب شده. ۱۵۰ گرم نخود پخته حدود ۱۳٫۳ گرم پروتئین داره."},
+    {id:"beans",name:"لوبیا",ic:"bean",category:"other",serving:150,unit:"گرم",protein:13,step:50,info:"وزن پخته حساب شده. نوع لوبیا عدد رو کمی جابه‌جا می‌کنه؛ اینجا میانگین کاربردی در نظر گرفته شده."},
+    {id:"tofu",name:"توفو",ic:"tofu",category:"other",serving:100,unit:"گرم",protein:13,step:50,info:"وزن آبکش‌شده حساب شده. توفوی سفت معمولاً پروتئین بیشتری از توفوی نرم داره، پس بستهٔ محصول رو هم نگاه کن."},
+    {id:"soy",name:"سویا",ic:"soy",category:"other",serving:100,unit:"گرم",protein:16,step:50,info:"وزن پخته و آمادهٔ خوردن حساب شده. سویای خشک قبل از پخت عدد خیلی بالاتری داره، پس این دوتا رو با هم قاطی نکن."},
+    {id:"edamame",name:"سویای سبز",ic:"edamame",category:"other",serving:100,unit:"گرم",protein:11,step:50,info:"همون دانهٔ سبز سویاست که گاهی با اسم ادامامه می‌بینی. وزن پخته و دانهٔ بدون غلاف حساب شده."},
+    {id:"seitan",name:"پروتئین گندم",ic:"seitan",category:"other",serving:100,unit:"گرم",protein:24,step:50,info:"همون سیتانه؛ غذایی که بیشترش از گلوتنِ گندم درست می‌شه. برند و دستور پخت روی مقدار پروتئینش اثر زیادی داره."}
+  ];
+
+  var goalMatrix={
+    none:{loss:[1.2,1.6,"برای چربی‌سوزی بدون ورزش، این بازه می‌تونه به سیری و نگه‌داشتن عضله کمک کنه."],maintain:[0.8,1.0,"اگه ورزش منظم نداری و هدفت حفظ وزنه، این بازه نیازت رو پوشش میده"],gain:[1.2,1.6,"پروتئین به‌تنهایی عضله نمی‌سازه. اگه عضله‌سازی هدفته، تمرین قدرتی رو هم به برنامه‌ات اضافه کن."]},
+    cardio:{loss:[1.6,2.0,"برای تمرین هوازی و چربی‌سوزی، بخش بالاتر بازهٔ ISSN کمک می‌کنه پروتئینت کم نیاد."],maintain:[1.4,1.6,"برای ورزش هوازی و حفظ وزن، این بازه معمولاً جواب می‌ده."],gain:[1.6,2.0,"برای ریکاوریِ تمرین هوازی خوبه؛ ولی برای عضله‌سازی جدی، تمرین قدرتی هم لازمه."]},
+    mixed:{loss:[1.8,2.0,"چون هم هوازی داری هم قدرتی و هدفت چربی‌سوزیه، نزدیک بالای بازهٔ ISSN حساب کردیم."],maintain:[1.4,1.8,"برای تمرین ترکیبی و حفظ وزن، این بازه انتخاب خوبیه."],gain:[1.6,2.0,"برای عضله‌سازی با تمرین ترکیبی، این بازه معمولاً کافیه؛ خواب و کالریِ کافی هم مهمن."]},
+    strength:{loss:[1.8,2.0,"برای تمرین قدرتی موقع چربی‌سوزی، نزدیک بالای بازهٔ ISSN حساب کردیم تا حفظ عضله راحت‌تر بشه."],maintain:[1.6,1.8,"برای تمرین قدرتی و حفظ وزن، این بازه معمولاً نیازت رو خوب پوشش می‌ده."],gain:[1.6,2.0,"برای عضله‌سازی با تمرین قدرتی، ISSN می‌گه این بازه برای بیشتر آدم‌ها کافیه."]}
+  };
+
+  var STORAGE="protein-yar-mottainai-v1";
+  var defaultState={weight:80,activity:"mixed",goal:"maintain",activeMeal:"breakfast",meals:{breakfast:[],lunch:[],dinner:[],snack:[]},customFoods:[]};
+  var state=loadState(), toastTimer;
+
+  function loadState(){
+    try{var s=JSON.parse(localStorage.getItem(STORAGE));if(!s)return JSON.parse(JSON.stringify(defaultState));
+      return Object.assign(JSON.parse(JSON.stringify(defaultState)),s,{meals:Object.assign(JSON.parse(JSON.stringify(defaultState.meals)),s.meals||{}),customFoods:Array.isArray(s.customFoods)?s.customFoods:[]});
+    }catch(e){return JSON.parse(JSON.stringify(defaultState));}
+  }
+  function saveState(){try{localStorage.setItem(STORAGE,JSON.stringify(state));}catch(e){}}
+  function allFoods(){return baseFoods.concat(state.customFoods);}
+  function findFood(id){return allFoods().filter(function(f){return f.id===id;})[0];}
+
+  function getGoal(){
+    var g=goalMatrix[state.activity][state.goal];
+    var low=Math.round(state.weight*g[0]), high=Math.round(state.weight*g[1]);
+    return {lowRatio:g[0],highRatio:g[1],low:low,high:high,target:Math.round((low+high)/2),explanation:g[2]};
+  }
+  function itemProtein(item){var f=findFood(item.foodId);if(!f)return 0;var p=f.editableProtein?(Number(item.protein)||f.protein):f.protein;return (item.amount/f.serving)*p;}
+  function mealTotal(m){return state.meals[m].reduce(function(s,it){return s+itemProtein(it);},0);}
+  function dayTotal(){return Object.keys(mealNames).reduce(function(s,m){return s+mealTotal(m);},0);}
+  function amtLabel(item,f){return fmt(item.amount)+" "+f.unit;}
+
+  function setChoice(gid,val){var ns=document.querySelectorAll("#"+gid+" .choice");for(var i=0;i<ns.length;i++)ns[i].classList.toggle("on",ns[i].dataset.value===val);}
+
+  function updateGoalUI(){
+    var g=getGoal();
+    el("goalRange").textContent=fmt(g.low)+" تا "+fmt(g.high);
+    el("goalRatio").textContent=fmt(g.lowRatio)+" تا "+fmt(g.highRatio)+" گرم/کیلو";
+    el("goalExplanation").textContent=g.explanation;
+    el("targetAmount").textContent=fmt(g.target);
+  }
+  function updateDashboard(){
+    var total=dayTotal(), g=getGoal();
+    var percent=g.target?Math.round((total/g.target)*100):0, vis=clamp(percent,0,100);
+    var C=2*Math.PI*67, ring=el("progressRing");
+    ring.style.strokeDasharray=C; ring.style.strokeDashoffset=C*(1-vis/100);
+    ring.style.stroke=total>=g.low?"#8aa472":"#b6bcc6";
+    el("totalProtein").textContent=fmt(percent);
+    el("consumed").textContent=fmt(total);
+    el("remaining").textContent=fmt(Math.max(0,g.target-total));
+    if(total===0){el("progressTitle").textContent="شروع کنیم؟";el("progressText").textContent="اولین غذا رو به یکی از وعده‌هات اضافه کن.";}
+    else if(total<g.low*.35){el("progressTitle").textContent="شروع خوبیه";el("progressText").textContent=fmt(Math.max(0,g.low-total))+" گرم تا اولِ بازهٔ پیشنهادی مونده.";}
+    else if(total<g.low*.7){el("progressTitle").textContent="داری نزدیک می‌شی";el("progressText").textContent=fmt(g.low-total)+" گرم دیگه تا اولِ بازهٔ پیشنهادی.";}
+    else if(total<g.low){el("progressTitle").textContent="دیگه داری می‌رسی!";el("progressText").textContent="فقط "+fmt(g.low-total)+" گرم دیگه مونده.";}
+    else if(total<=g.high){el("progressTitle").textContent="پروتئین امروزت رو رسوندی";el("progressText").textContent="عالیه؛ لازم نیست حتماً عدد رو دقیقاً تا وسط بازه ببری.";}
+    else {el("progressTitle").textContent="پروتئینت کافی و رو به بالاست";el("progressText").textContent="یه روز بالاتر رفتن معمولاً مسئله‌ای نیست؛ تعادلِ کلِ هفته مهم‌تره.";}
+    var nonEmpty=Object.keys(mealNames).filter(function(m){return mealTotal(m)>0;}).length;
+    el("distributionTip").textContent=(nonEmpty<=1&&total>0)?"همهٔ پروتئینت رو توی یه وعده نریز؛ یه بخشی رو ببر وعده‌های دیگه.":"پروتئینت رو بین ۳ تا ۴ وعده پخش کنی، راحت‌تر می‌رسونیش.";
+  }
+  function renderMealTabs(){
+    var tabs=document.querySelectorAll(".mtab");
+    for(var i=0;i<tabs.length;i++){var m=tabs[i].dataset.meal;tabs[i].classList.toggle("on",m===state.activeMeal);tabs[i].querySelector("small span").textContent=fmt(mealTotal(m));}
+  }
+  function renderActiveMeal(){
+    var c=el("mealContent"), items=state.meals[state.activeMeal];
+    el("activeMealName").textContent=mealNames[state.activeMeal];
+    el("activeMealTotal").textContent=fmt(mealTotal(state.activeMeal));
+    if(!items.length){c.innerHTML='<div class="empty">از منابع پروتئینِ پایین، یه غذا به '+mealNames[state.activeMeal]+' اضافه کن.</div>';return;}
+    c.innerHTML=items.map(function(item,index){
+      var f=findFood(item.foodId);if(!f)return "";
+      var detail=f.editableProtein
+        ? 'هر بطری <input class="pinput" data-pin type="number" min="1" max="100" step="1" value="'+(Number(item.protein)||f.protein)+'"> گرم'
+        : fmt(f.protein)+' گرم در '+fmt(f.serving)+' '+f.unit;
+      return '<div class="mitem" data-index="'+index+'">'+
+        '<div class="miname"><span class="mo">'+ico(f.ic)+'</span><span><b>'+esc(f.name)+'</b><small>'+detail+'</small></span></div>'+
+        '<div class="stepper"><button type="button" data-action="decrease">−</button><span class="amt">'+amtLabel(item,f)+'</span><button type="button" data-action="increase">＋</button></div>'+
+        '<div class="mipro">'+fmt(itemProtein(item))+' گرم</div>'+
+        '<button class="rm" type="button" data-action="remove" aria-label="حذف">×</button></div>';
+    }).join("");
+  }
+  function renderFoods(){
+    var q=el("searchInput").value.trim().toLowerCase();
+    var cat=document.querySelector("#categoryFilter .catchip.on").dataset.cat;
+    var vis=allFoods().filter(function(f){return (cat==="all"||f.category===cat)&&(!q||f.name.toLowerCase().indexOf(q)>=0);});
+    if(!vis.length){el("foods").innerHTML='<div class="noresult">چیزی با این مشخصات پیدا نکردم.</div>';return;}
+    var groups=[{key:"animal",title:"پروتئین‌های حیوانی"},{key:"other",title:"بقیهٔ منابع پروتئین"},{key:"custom",title:"غذاهای خودم"}];
+    el("foods").innerHTML=groups.map(function(gr){
+      var fs=vis.filter(function(f){return f.category===gr.key;});if(!fs.length)return "";
+      return '<div class="fgroup"><div class="fgtitle">'+gr.title+'</div><div class="fgrid">'+fs.map(function(f){
+        var label=f.editableProtein?"عدد روی بطری رو خودت وارد می‌کنی":(fmt(f.protein)+' گرم در '+fmt(f.serving)+' '+f.unit);
+        return '<div class="fshell"><button class="fhelp" type="button" data-info-id="'+f.id+'" aria-label="توضیح">i</button>'+
+          '<button class="fcard" type="button" data-food-id="'+f.id+'"><span class="mo">'+ico(f.ic)+'</span><b>'+esc(f.name)+'</b><span class="fp">'+label+'</span></button></div>';
+      }).join("")+'</div></div>';
+    }).join("");
+  }
+  function renderAll(){
+    el("weightRange").value=state.weight; el("weightNumber").value=state.weight;
+    setChoice("activityChoices",state.activity); setChoice("goalChoices",state.goal);
+    updateGoalUI(); updateDashboard(); renderMealTabs(); renderActiveMeal(); renderFoods(); saveState();
+  }
+
+  function addFood(id){
+    var f=findFood(id);if(!f)return;
+    var meal=state.meals[state.activeMeal], ex=meal.filter(function(it){return it.foodId===id;})[0];
+    if(ex)ex.amount+=f.step; else {var o={foodId:id,amount:f.serving};if(f.editableProtein)o.protein=f.protein;meal.push(o);}
+    renderAll(); showToast(f.name+" رفت توی "+mealNames[state.activeMeal]);
+  }
+  function changeItem(index,action){
+    var items=state.meals[state.activeMeal], item=items[index];if(!item)return;var f=findFood(item.foodId);if(!f)return;
+    if(action==="increase")item.amount+=f.step;
+    if(action==="decrease"){item.amount-=f.step;if(item.amount<=0)items.splice(index,1);}
+    if(action==="remove")items.splice(index,1);
+    renderAll();
+  }
+  function showToast(m){clearTimeout(toastTimer);el("toast").textContent=m;el("toast").classList.add("show");toastTimer=setTimeout(function(){el("toast").classList.remove("show");},2200);}
+
+  /* ---------- summary (screenshot) ---------- */
+  function buildSummary(){
+    var g=getGoal(), total=dayTotal(), percent=g.target?Math.round((total/g.target)*100):0;
+    var html='<div class="scard" id="scard"><div class="shead"><div class="st">پروتئین امروز</div><div class="sc">'+el("today").textContent+'</div>'+
+      '<div class="sbig">'+fmt(total)+' از '+fmt(g.target)+' گرم · '+fmt(percent)+'٪</div>'+
+      '<div class="sc">بازهٔ پیشنهادی: '+fmt(g.low)+' تا '+fmt(g.high)+' گرم</div></div>';
+    var any=false;
+    Object.keys(mealNames).forEach(function(m){
+      var items=state.meals[m];if(!items.length)return;any=true;
+      html+='<div class="sgrp"><div class="gn"><span>'+mealNames[m]+'</span><span>'+fmt(mealTotal(m))+' گرم</span></div>';
+      items.forEach(function(item){var f=findFood(item.foodId);if(!f)return;html+='<div class="sitem"><span class="so">'+ico(f.ic)+'</span><span>'+esc(f.name)+' · '+amtLabel(item,f)+'</span><span class="sg">'+fmt(itemProtein(item))+' گرم</span></div>';});
+      html+='</div>';
+    });
+    if(!any)html+='<div class="sc" style="text-align:center;padding:24px 0">هنوز غذایی اضافه نکردی.</div>';
+    html+='<div class="sfoot">به‌اندازهٔ کافی برسون، نه بیشتر · <b>فست لایف</b></div></div>';
+    return html;
+  }
+  function showSummary(){
+    el("summaryView").innerHTML='<div class="listtop"><button class="navbtn prime" id="saveImg">ذخیرهٔ عکس</button><button class="navbtn" id="backEdit">بازگشت</button></div>'+buildSummary();
+    el("mainView").style.display="none"; el("summaryView").style.display="block"; window.scrollTo(0,0);
+    el("backEdit").onclick=function(){history.back();};
+    el("saveImg").onclick=saveImage;
+  }
+  function hideSummary(){el("summaryView").style.display="none";el("mainView").style.display="block";}
+  function saveImage(){
+    var card=el("scard");
+    if(typeof html2canvas==="undefined"){alert("برای ذخیرهٔ عکس به اینترنت نیاز است. می‌توانی همین صفحه را اسکرین‌شات بگیری.");return;}
+    var btn=el("saveImg"), old=btn.textContent; btn.textContent="در حال ساخت...";
+    html2canvas(card,{backgroundColor:"#e9ebf0",scale:2,useCORS:true}).then(function(canvas){
+      btn.textContent=old;
+      try{var a=document.createElement("a");a.href=canvas.toDataURL("image/jpeg",0.95);a.download="پروتئین-امروز.jpg";document.body.appendChild(a);a.click();a.remove();}
+      catch(e){var w=window.open();if(w)w.document.write('<img src="'+canvas.toDataURL("image/jpeg",0.95)+'" style="width:100%">');}
+    }).catch(function(){btn.textContent=old;alert("ساختِ عکس ناموفق بود؛ می‌توانی اسکرین‌شات بگیری.");});
+  }
+
+  /* ---------- modals + hardware back ---------- */
+  function anyModalOpen(){return document.querySelector(".backdrop.open");}
+  function openLayer(type){
+    if(type==="custom"){el("customModal").classList.add("open");setTimeout(function(){el("cName").focus();},60);}
+    else if(type==="info"){el("infoModal").classList.add("open");}
+    else if(type==="summary"){showSummary();}
+    history.pushState({layer:type},"");
+  }
+  function closeTopLayer(){
+    var m=anyModalOpen();
+    if(m){m.classList.remove("open");return;}
+    if(el("summaryView").style.display==="block"){hideSummary();}
+  }
+  window.addEventListener("popstate",function(){closeTopLayer();});
+
+  function openFoodInfo(id){var f=findFood(id);if(!f)return;el("infoTitle").textContent=f.name;el("infoText").textContent=f.info||(""+fmt(f.protein)+" گرم پروتئین در هر "+fmt(f.serving)+" "+f.unit+".");openLayer("info");}
+
+  /* ---------- events ---------- */
+  el("weightRange").addEventListener("input",function(e){state.weight=Number(e.target.value);el("weightNumber").value=state.weight;updateGoalUI();updateDashboard();saveState();});
+  el("weightNumber").addEventListener("change",function(e){state.weight=clamp(Number(e.target.value)||80,35,220);renderAll();});
+  el("activityChoices").addEventListener("click",function(e){var b=e.target.closest(".choice");if(!b)return;state.activity=b.dataset.value;renderAll();});
+  el("goalChoices").addEventListener("click",function(e){var b=e.target.closest(".choice");if(!b)return;state.goal=b.dataset.value;renderAll();});
+  el("mealTabs").addEventListener("click",function(e){var t=e.target.closest(".mtab");if(!t)return;state.activeMeal=t.dataset.meal;renderAll();});
+  el("mealContent").addEventListener("click",function(e){var b=e.target.closest("[data-action]"),row=e.target.closest(".mitem");if(!b||!row)return;changeItem(Number(row.dataset.index),b.dataset.action);});
+  el("mealContent").addEventListener("input",function(e){if(!e.target.matches("[data-pin]"))return;var row=e.target.closest(".mitem"),item=state.meals[state.activeMeal][Number(row.dataset.index)];if(!item)return;item.protein=clamp(Number(e.target.value)||1,1,100);row.querySelector(".mipro").textContent=fmt(itemProtein(item))+" گرم";el("activeMealTotal").textContent=fmt(mealTotal(state.activeMeal));updateDashboard();renderMealTabs();saveState();});
+  el("foods").addEventListener("click",function(e){var ib=e.target.closest("[data-info-id]");if(ib){e.stopPropagation();openFoodInfo(ib.dataset.infoId);return;}var c=e.target.closest("[data-food-id]");if(c)addFood(c.dataset.foodId);});
+  el("searchInput").addEventListener("input",renderFoods);
+  document.getElementById("categoryFilter").addEventListener("click",function(e){var c=e.target.closest(".catchip");if(!c)return;document.querySelectorAll("#categoryFilter .catchip").forEach(function(x){x.classList.remove("on");});c.classList.add("on");renderFoods();});
+  el("resetBtn").addEventListener("click",function(){if(!dayTotal()||confirm("همهٔ غذاهای امروزت پاک بشن؟")){state.meals=JSON.parse(JSON.stringify(defaultState.meals));renderAll();showToast("همهٔ وعده‌ها پاک شدن");}});
+
+  el("customFoodBtn").addEventListener("click",function(){openLayer("custom");});
+  el("summaryBtn").addEventListener("click",function(){openLayer("summary");});
+  el("closeCustom").addEventListener("click",function(){history.back();});
+  el("cancelCustom").addEventListener("click",function(){history.back();});
+  el("customModal").addEventListener("click",function(e){if(e.target===el("customModal"))history.back();});
+  el("closeInfo").addEventListener("click",function(){history.back();});
+  el("infoOk").addEventListener("click",function(){history.back();});
+  el("infoModal").addEventListener("click",function(e){if(e.target===el("infoModal"))history.back();});
+  document.addEventListener("keydown",function(e){if(e.key==="Escape"&&(anyModalOpen()||el("summaryView").style.display==="block"))history.back();});
+
+  el("customForm").addEventListener("submit",function(e){
+    e.preventDefault();
+    var name=el("cName").value.trim(); var protein=Number(el("cProtein").value); var unit=el("cUnit").value.trim()||"وعده";
+    if(!name||!(protein>0))return;
+    var id="custom-"+Date.now();
+    state.customFoods.push({id:id,name:name,ic:"custom",category:"custom",serving:1,unit:unit,protein:protein,step:1,info:"این غذا رو خودت اضافه کردی: "+fmt(protein)+" گرم پروتئین در هر "+unit+"."});
+    el("customForm").reset();
+    history.back(); // close modal via history
+    addFood(id);
+  });
+
+  /* date */
+  try{el("today").textContent=new Date().toLocaleDateString("fa-IR",{weekday:"long",year:"numeric",month:"long",day:"numeric"});}catch(e){}
+
+  history.replaceState({layer:"main"},"");
+  renderAll();
+})();
+</script>
+<script>
+(function(){
+  function applyTheme(t){
+    var shad=(t==='shad');
+    document.body.classList.toggle('shad',shad);
+    var m=document.getElementById('thm-minimal'),s=document.getElementById('thm-shad');
+    if(m)m.classList.toggle('on',!shad);
+    if(s)s.classList.toggle('on',shad);
+  }
+  window.setTheme=function(t){applyTheme(t);try{localStorage.setItem('fl_theme',t);}catch(e){}};
+  try{applyTheme(localStorage.getItem('fl_theme')||'minimal');}catch(e){applyTheme('minimal');}
+})();
+</script>
+</body>
+</html>
