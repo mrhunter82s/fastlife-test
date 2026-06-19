@@ -49,7 +49,7 @@
   body.shad .match{background:rgba(255,255,255,.85)}
 </style>
 </head>
-<body>
+<body data-tool="وعده‌ساز">
 <main class="wrap">
   <section id="builderView">
     <header><h1>وعده‌ساز</h1></header>
@@ -303,4 +303,5 @@ state.custom=state.custom.filter(x=>VALID_CATS.has(x.category));state.selected=s
   try{applyTheme(localStorage.getItem('fl_theme')||'minimal');}catch(e){applyTheme('minimal');}
 })();
 </script>
+<script src="analytics.js"></script>
 </body></html>
