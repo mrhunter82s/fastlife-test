@@ -115,15 +115,25 @@ tr:last-child td{border-bottom:0}
     });
   }
 
+  function fetchActions(){
+    var floorMs=Math.max(Date.now()-7*864e5, Date.parse(RESET_SINCE)||0);
+    var since=new Date(floorMs).toISOString();
+    var url=SUPABASE_URL.replace(/\/+$/,"")+"/rest/v1/actions?select=visitor_id,tool,action,created_at&created_at=gte."+encodeURIComponent(since)+"&order=created_at.desc&limit=20000";
+    return fetch(url,{headers:{"apikey":SUPABASE_KEY,"Authorization":"Bearer "+SUPABASE_KEY}}).then(function(r){
+      if(!r.ok) throw new Error("HTTP "+r.status);
+      return r.json();
+    }).catch(function(){return [];});   // اگر جدول actions هنوز ساخته نشده، پنل نشکنه
+  }
+
   var chart1, chart2;
   function load(){
     el("content").innerHTML='<div class="loading">در حال خواندن داده‌ها…</div>';
-    fetchEvents().then(render).catch(function(e){
+    Promise.all([fetchEvents(),fetchActions()]).then(function(res){render(res[0],res[1]);}).catch(function(e){
       el("content").innerHTML='<div class="panel"><h2>خطا در خواندن داده‌ها</h2><p class="note">پیام: '+String(e.message||e)+'<br>اگه تازه راه‌اندازی کردی، چک کن آدرس و کلیدِ Supabase درست وارد شده باشه و کاربرها حداقل یک‌بار وارد ابزارها شده باشن.</p></div>';
     });
   }
 
-  function render(rows){
+  function render(rows,actions){
     rows=rows||[];
     if(MYVID) rows=rows.filter(function(r){return r.visitor_id!==MYVID;});
     if(!rows.length){
@@ -165,6 +175,38 @@ tr:last-child td{border-bottom:0}
     });
     html+='</tbody></table></div>';
 
+    /* ===== قیفِ تکمیل (actions) ===== */
+    actions=actions||[];
+    if(MYVID) actions=actions.filter(function(a){return a.visitor_id!==MYVID;});
+    var MAIN={"وعده‌ساز":"ideas_generated","پروتئین‌یار":"first_food_added","پنجره‌یاب":"fast_started"};
+    var ACTLBL={ideas_generated:"زدنِ «ایده بده»",first_food_added:"افزودنِ اولین غذا",fast_started:"شروعِ فست"};
+    var doers={}, actAgg={};
+    actions.forEach(function(a){
+      var t=a.tool||"—", ac=a.action||"—", v=a.visitor_id||"—";
+      if(!actAgg[ac]) actAgg[ac]={total:0,vis:{}};
+      actAgg[ac].total++; actAgg[ac].vis[v]=1;
+      if(MAIN[t]===ac){ if(!doers[t]) doers[t]={}; doers[t][v]=1; }
+    });
+    var fTools=["وعده‌ساز","پروتئین‌یار","پنجره‌یاب"], fLabels=[], fVisit=[], fDoers=[];
+    html+='<div class="panel"><h2>قیفِ تکمیل — چند نفر کارِ اصلی را انجام دادند</h2><table><thead><tr>'+
+      '<th>ابزار</th><th>کارِ اصلی</th><th>بازدیدکنندهٔ یکتا</th><th>انجام‌دهنده (یکتا)</th><th>نرخِ تبدیل</th></tr></thead><tbody>';
+    fTools.forEach(function(tl){
+      var uv=byTool[tl]?Object.keys(byTool[tl].vis).length:0;
+      var dd=doers[tl]?Object.keys(doers[tl]).length:0;
+      var rate=uv?Math.round(dd/uv*100):0;
+      html+='<tr><td><b>'+tl+'</b></td><td>'+(ACTLBL[MAIN[tl]]||MAIN[tl])+'</td><td>'+fa(uv)+'</td><td>'+fa(dd)+'</td><td><b style="color:var(--sage-d)">'+fa(rate)+'٪</b></td></tr>';
+      fLabels.push(tl); fVisit.push(uv); fDoers.push(dd);
+    });
+    html+='</tbody></table><div class="chartbox" style="height:220px;margin-top:14px"><canvas id="cFunnel"></canvas></div></div>';
+    var actNames=Object.keys(actAgg).sort(function(a,b){return actAgg[b].total-actAgg[a].total;});
+    if(actNames.length){
+      html+='<div class="panel"><h2>همهٔ اکشن‌ها</h2><table><thead><tr><th>اکشن</th><th>تعدادِ کل</th><th>کاربرِ یکتا</th></tr></thead><tbody>';
+      actNames.forEach(function(ac){
+        html+='<tr><td>'+esc(ac)+'</td><td>'+fa(actAgg[ac].total)+'</td><td>'+fa(Object.keys(actAgg[ac].vis).length)+'</td></tr>';
+      });
+      html+='</tbody></table></div>';
+    }
+
     /* charts */
     html+='<div class="two"><div class="panel"><h2>کلِ زمان در هر ابزار (دقیقه)</h2><div class="chartbox"><canvas id="c1"></canvas></div></div>'+
       '<div class="panel"><h2>تعداد بازدید در هر ابزار</h2><div class="chartbox"><canvas id="c2"></canvas></div></div></div>';
@@ -195,6 +237,12 @@ tr:last-child td{border-bottom:0}
     if(window.Chart){
       chart1=new Chart(el("c1"),{type:"bar",data:{labels:labels,datasets:[{data:mins,backgroundColor:green,borderRadius:8}]},options:barOpts("دقیقه")});
       chart2=new Chart(el("c2"),{type:"bar",data:{labels:labels,datasets:[{data:vis,backgroundColor:peach,borderRadius:8}]},options:barOpts("بازدید")});
+      if(el("cFunnel")){
+        new Chart(el("cFunnel"),{type:"bar",data:{labels:fLabels,datasets:[
+          {label:"بازدیدکنندهٔ یکتا",data:fVisit,backgroundColor:"#c4c8d2",borderRadius:8},
+          {label:"انجام‌دهندهٔ کارِ اصلی",data:fDoers,backgroundColor:"#8aa472",borderRadius:8}
+        ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,labels:{font:{family:"Vazirmatn"}}}},scales:{x:{ticks:{font:{family:"Vazirmatn"}},grid:{display:false}},y:{beginAtZero:true,ticks:{font:{family:"Vazirmatn"}}}}}});
+      }
     }
   }
   function barOpts(unit){

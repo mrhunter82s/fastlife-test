@@ -28,6 +28,28 @@
   var activeSeconds = 0;
   var STEP = 15; // هر ۱۵ ثانیه یک‌بار به‌روزرسانی
 
+  // ---- ردیابِ «اکشن» (کارِ اصلیِ هر ابزار) ----
+  // همان fl_vid استفاده می‌شود تا اکشن‌ها به همان بازدیدکننده وصل شوند.
+  // هر اکشن فقط یک‌بار در هر بازدید/جلسه ثبت می‌شود تا تورم نکند.
+  var _flActions = {};
+  window.flTrack = function (action) {
+    if (!action || _flActions[action]) return;
+    _flActions[action] = 1;
+    try {
+      fetch(SUPABASE_URL.replace(/\/+$/, "") + "/rest/v1/actions", {
+        method: "POST",
+        headers: {
+          "apikey": SUPABASE_KEY,
+          "Authorization": "Bearer " + SUPABASE_KEY,
+          "Content-Type": "application/json",
+          "Prefer": "return=minimal"
+        },
+        body: JSON.stringify([{ visitor_id: vid, tool: TOOL, action: action }]),
+        keepalive: true
+      });
+    } catch (e) {}
+  };
+
   function endpoint() {
     return SUPABASE_URL.replace(/\/+$/, "") + "/rest/v1/events?on_conflict=session_id";
   }

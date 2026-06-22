@@ -257,7 +257,7 @@
     document.querySelectorAll('#ratios .rat').forEach(function(el){el.classList.toggle('on',+el.dataset.r===state.ratio);});
   }
   document.querySelectorAll('#ratios .rat').forEach(function(el){
-    el.onclick=function(){state.ratio=+el.dataset.r;state.start=DEFSTART[state.ratio];selectRatioUI();drawClock();updateWindows();};
+    el.onclick=function(){if(window.flTrack)flTrack('ratio_selected');state.ratio=+el.dataset.r;state.start=DEFSTART[state.ratio];selectRatioUI();drawClock();updateWindows();};
   });
   document.getElementById('tPlus').onclick=function(){state.start=(state.start+1)%24;drawClock();updateWindows();};
   document.getElementById('tMinus').onclick=function(){state.start=(state.start+23)%24;drawClock();updateWindows();};
@@ -266,7 +266,7 @@
   var ppanel=document.getElementById('ppanel');
   document.getElementById('ptoggle').onclick=function(){
     if(ppanel.classList.contains('on')){history.back();}
-    else{ppanel.classList.add('on');history.pushState({panel:1},'');}
+    else{ppanel.classList.add('on');history.pushState({panel:1},'');if(window.flTrack)flTrack('personal_rec_opened');}
   };
   window.addEventListener('popstate',function(){ if(ppanel.classList.contains('on')) ppanel.classList.remove('on'); });
 
@@ -380,7 +380,7 @@
       document.getElementById('remindBtn').style.display='inline';
     }
   }
-  function startFast(){timer.startTs=Date.now();lsSet('fl_fast_start',timer.startTs);startTicking();}
+  function startFast(){if(window.flTrack)flTrack('fast_started');timer.startTs=Date.now();lsSet('fl_fast_start',timer.startTs);startTicking();}
   function endFast(){
     timer.startTs=null;if(timer.int)clearInterval(timer.int);lsDel('fl_fast_start');
     document.getElementById('elapsed').textContent='۰:۰۰';

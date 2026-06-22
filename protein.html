@@ -505,6 +505,7 @@
 
   function addFood(id){
     var f=findFood(id);if(!f)return;
+    if(window.flTrack)flTrack('first_food_added');
     var meal=state.meals[state.activeMeal], ex=meal.filter(function(it){return it.foodId===id;})[0];
     if(ex)ex.amount+=f.step; else {var o={foodId:id,amount:f.serving};if(f.editableProtein)o.protein=f.protein;meal.push(o);}
     renderAll(); showToast(f.name+" رفت توی "+mealNames[state.activeMeal]);
@@ -583,8 +584,8 @@
   document.getElementById("categoryFilter").addEventListener("click",function(e){var c=e.target.closest(".catchip");if(!c)return;document.querySelectorAll("#categoryFilter .catchip").forEach(function(x){x.classList.remove("on");});c.classList.add("on");renderFoods();});
   el("resetBtn").addEventListener("click",function(){if(!dayTotal()||confirm("همهٔ غذاهای امروزت پاک بشن؟")){state.meals=JSON.parse(JSON.stringify(defaultState.meals));renderAll();showToast("همهٔ وعده‌ها پاک شدن");}});
 
-  el("customFoodBtn").addEventListener("click",function(){openLayer("custom");});
-  el("summaryBtn").addEventListener("click",function(){openLayer("summary");});
+  el("customFoodBtn").addEventListener("click",function(){if(window.flTrack)flTrack('custom_food');openLayer("custom");});
+  el("summaryBtn").addEventListener("click",function(){if(window.flTrack)flTrack('summary_viewed');openLayer("summary");});
   el("closeCustom").addEventListener("click",function(){history.back();});
   el("cancelCustom").addEventListener("click",function(){history.back();});
   el("customModal").addEventListener("click",function(e){if(e.target===el("customModal"))history.back();});
